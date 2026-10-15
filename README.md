@@ -4,9 +4,9 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/lbssousa/ssh-askpass-omarchy/badge)](https://scorecard.dev/viewer/?uri=github.com/lbssousa/ssh-askpass-omarchy)
 
 An SSH Askpass dialog for the Omarchy shell, styled like the polkit agent.
-It asks for passphrases and FIDO PINs, confirms `ssh-add -c` key uses, and
-shows security key touch requests, in the same overlay as the shell's
-polkit agent.
+It asks for passphrases and FIDO PINs, asks OpenSSH's yes/no host key
+questions, confirms `ssh-add -c` key uses, and shows security key touch
+requests, in the same overlay as the shell's polkit agent.
 
 ## How it works
 
@@ -21,8 +21,20 @@ OpenSSH tells the askpass what it wants through `SSH_ASKPASS_PROMPT`:
 | `SSH_ASKPASS_PROMPT` | When | Dialog | Result |
 |---|---|---|---|
 | unset | passphrases, FIDO PINs (`Enter PIN for … key …`) | password field | passphrase on stdout |
+| unset, prompt is a yes/no question | unknown host keys (`Are you sure you want to continue connecting (yes/no/[fingerprint])?`), `UpdateHostKeys=ask` | plain text field | answer on stdout |
 | `confirm` | ssh-agent using a key added with `ssh-add -c` | **Deny** / **Allow** (Enter does not allow) | exit 0 allows, exit 1 denies |
 | `none` | notifications, e.g. `Confirm user presence for key …` | **Touch your security key** card for user-presence prompts; a message with **Dismiss** otherwise | OpenSSH kills the askpass (SIGTERM) when it's done, which closes the dialog |
+
+OpenSSH asks its yes/no questions with the answer echoed, but that
+never reaches the askpass: it gets no hint, as for a passphrase. So the
+binary recognizes them by their text: a prompt whose last line is
+`Are you sure you want to continue connecting (yes/no/[fingerprint])?` or
+`… (yes/no)?`, or a prompt that is exactly `Please type 'yes' or 'no':`,
+`Please type 'yes', 'no' or the fingerprint:` or
+`Accept updated hostkeys? (yes/no):`. Passphrase and PIN prompts end in
+`:` right after a key path, which may hold a newline, so `:` questions
+only count as the whole prompt. The question always stays on the card's
+last line, however many other names for the key OpenSSH lists above it.
 
 The touch dialog shows up only when OpenSSH runs the askpass, never for other
 FIDO uses such as WebAuthn in a browser. If ssh-agent does the signing, it
@@ -34,12 +46,13 @@ running the askpass, whenever ssh runs in one, even with
 `SSH_ASKPASS_REQUIRE=prefer`. [omarchy-setup](https://github.com/lbssousa/omarchy-setup)
 carries a small OpenSSH patch for that (`just openssh-askpass`).
 
-### Protocol between the two halves (v2)
+### Protocol between the two halves (v3)
 
-Request: `{"v":2,"mode":"passphrase"|"confirm"|"notify","prompt":"…"}`
+Request: `{"v":3,"mode":"passphrase"|"text"|"confirm"|"notify","prompt":"…"}`
 
 Response: `{"result":"ok"|"cancel"|"busy"|"error","password"?,"message"?}`.
-`password` (percent-encoded) is only sent in `passphrase` mode. The plugin
+`password` (percent-encoded) is only sent in `passphrase` and `text`
+modes; in `text` mode it holds the answer to the question. The plugin
 refuses other protocol versions and unknown modes.
 
 ### Security notes
@@ -58,6 +71,10 @@ vulnerability. In short:
 - **Displayed text:** the prompt is stripped of control characters,
   text-reordering and zero-width characters, limited in size, and rendered
   as plain text, never rich text.
+- **Questions in plain text:** a server's keyboard-interactive prompts
+  (`(user@host) …`) reach the askpass without a hint too, and the server
+  writes them. One can end in an OpenSSH question line and get a visible
+  field. What's typed there goes to that server anyway.
 - **Inside omarchy-shell:** the passphrase goes through a QML `TextInput`
   and the JavaScript heap, which can't be wiped. The field is cleared as
   soon as the answer is sent. This is the same trade-off as the polkit
@@ -79,7 +96,7 @@ export SSH_ASKPASS_REQUIRE=prefer
 | `just test-plugin` | Protocol tests against the real QML plugin in a throwaway Quickshell instance (needs the Wayland session; dialogs flash on screen) |
 | `just fuzz [target] [secs]` | Fuzzes the reply parser, the prompt cleaner or the passphrase decoder with cargo-fuzz (needs nightly Rust and `cargo install cargo-fuzz`) |
 | `just dev` | Runs the dialog in a separate Quickshell instance (`dev/`, which links the shell's `Commons`/`Ui`) on its own socket |
-| `just try [mode]` | Sends a sample `passphrase`, `confirm` or `touch` request through the `just dev` instance |
+| `just try [mode]` | Sends a sample `passphrase`, `confirm`, `hostkey` or `touch` request through the `just dev` instance |
 
 ## Releases
 

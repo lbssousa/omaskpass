@@ -48,6 +48,10 @@ something: each wrong PIN uses up one of a limited number of tries.
   (or the user, with Ctrl-C) can still cancel it.
 - **Memory pressure on the shell.** A same-uid client can send an endless
   request line to the plugin's socket.
+- **Server prompts that look like OpenSSH's questions.** A server's
+  keyboard-interactive prompt can end in "Are you sure you want to
+  continue connecting (yes/no)?" and so get a visible field. What's typed
+  goes to that server either way.
 - **Security key touch prompts when OpenSSH doesn't call the askpass.** See
   the README: that is about whether a dialog shows up, not a leak.
 
@@ -67,6 +71,10 @@ something: each wrong PIN uses up one of a limited number of tries.
   collapse, and it's cut to 6 lines and 2000 bytes. It's rendered as plain
   text, never rich text. What the dialog sends back is never echoed to
   stderr: failures are reported as fixed texts.
+- Only OpenSSH's own yes/no questions get a visible field, recognized by
+  their exact text: a question that ends in ':' must be the whole prompt,
+  since key paths (which may hold a newline) come right before the ':' of
+  a passphrase prompt. A hint from OpenSSH always wins over the text.
 - The prompt argument isn't assumed to be UTF-8, so a key comment with
   stray bytes can't crash the binary.
 - Bounded input: 64 KiB dialog replies and 16 KiB plugin requests.

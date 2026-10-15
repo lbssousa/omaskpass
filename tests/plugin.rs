@@ -87,18 +87,23 @@ fn plugin_protocol() {
         (r["result"].as_str(), r["message"].as_str()),
         (Some("error"), Some("invalid JSON"))
     );
-    let r = ask(&socket, "{\"v\":1,\"prompt\":\"p\"}\n");
-    assert_eq!(
-        r["message"], "unsupported request",
-        "old protocol versions are refused"
-    );
+    for old in [
+        "{\"v\":1,\"prompt\":\"p\"}\n",
+        "{\"v\":2,\"mode\":\"passphrase\",\"prompt\":\"p\"}\n",
+    ] {
+        assert_eq!(
+            ask(&socket, old)["message"],
+            "unsupported request",
+            "old protocol versions are refused: {old}"
+        );
+    }
     for bad in [
-        r#"{"v":2,"prompt":"p"}"#,
-        r#"{"v":2,"mode":"frob"}"#,
-        r#"{"v":2,"mode":"Confirm"}"#,
-        r#"{"v":2,"mode":["confirm"]}"#,
-        r#"{"v":2,"mode":"confirm","prompt":5}"#,
-        r#"{"v":2,"mode":"confirm","prompt":{"a":1}}"#,
+        r#"{"v":3,"prompt":"p"}"#,
+        r#"{"v":3,"mode":"frob"}"#,
+        r#"{"v":3,"mode":"Confirm"}"#,
+        r#"{"v":3,"mode":["confirm"]}"#,
+        r#"{"v":3,"mode":"confirm","prompt":5}"#,
+        r#"{"v":3,"mode":"confirm","prompt":{"a":1}}"#,
         "null",
         "[]",
     ] {
@@ -107,12 +112,12 @@ fn plugin_protocol() {
         assert_eq!(r["message"], "unsupported request", "{bad}");
     }
     let huge = format!(
-        "{{\"v\":2,\"mode\":\"notify\",\"prompt\":\"{}\"}}\n",
+        "{{\"v\":3,\"mode\":\"notify\",\"prompt\":\"{}\"}}\n",
         "x".repeat(70_000)
     );
     assert_eq!(ask(&socket, &huge)["message"], "request too large");
     let long = format!(
-        "{{\"v\":2,\"mode\":\"confirm\",\"prompt\":\"{}\"}}\n",
+        "{{\"v\":3,\"mode\":\"confirm\",\"prompt\":\"{}\"}}\n",
         "x".repeat(3_000)
     );
     assert_eq!(ask(&socket, &long)["message"], "prompt too long");
@@ -120,12 +125,12 @@ fn plugin_protocol() {
     // One dialog at a time, and a refused request never reads as a grant.
     let mut first = send(
         &socket,
-        b"{\"v\":2,\"mode\":\"confirm\",\"prompt\":\"Allow?\"}\n",
+        b"{\"v\":3,\"mode\":\"confirm\",\"prompt\":\"Allow?\"}\n",
     );
     assert!(dialog_is_open(&mut first), "a valid request opens a dialog");
     let r = ask(
         &socket,
-        "{\"v\":2,\"mode\":\"confirm\",\"prompt\":\"Allow?\"}\n",
+        "{\"v\":3,\"mode\":\"confirm\",\"prompt\":\"Allow?\"}\n",
     );
     assert_eq!(r["result"], "busy");
     assert!(r.get("password").is_none());
@@ -135,13 +140,22 @@ fn plugin_protocol() {
     thread::sleep(Duration::from_millis(500));
     let mut again = send(
         &socket,
-        b"{\"v\":2,\"mode\":\"notify\",\"prompt\":\"Confirm user presence for key k\"}\n",
+        b"{\"v\":3,\"mode\":\"notify\",\"prompt\":\"Confirm user presence for key k\"}\n",
     );
     assert!(dialog_is_open(&mut again), "the dialog was freed");
     drop(again);
     thread::sleep(Duration::from_millis(500));
 
     // A request with no prompt is fine in every mode.
-    let mut bare = send(&socket, b"{\"v\":2,\"mode\":\"passphrase\"}\n");
+    let mut bare = send(&socket, b"{\"v\":3,\"mode\":\"passphrase\"}\n");
     assert!(dialog_is_open(&mut bare));
+    drop(bare);
+    thread::sleep(Duration::from_millis(500));
+
+    // A yes/no question opens a dialog too.
+    let mut question = send(
+        &socket,
+        b"{\"v\":3,\"mode\":\"text\",\"prompt\":\"Please type 'yes' or 'no':\"}\n",
+    );
+    assert!(dialog_is_open(&mut question));
 }

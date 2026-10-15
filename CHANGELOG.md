@@ -7,6 +7,22 @@ tagged.
 
 ## [Unreleased]
 
+### Added
+- **Host key questions in plain text.** OpenSSH's yes/no questions
+  ("Are you sure you want to continue connecting
+  (yes/no/[fingerprint])?", "Please type 'yes' or 'no':",
+  "Accept updated hostkeys? (yes/no):") are asked in a visible text field
+  instead of a password field. OpenSSH gives the askpass no hint for them,
+  so they are recognized by their text; a question inside a key path keeps
+  the password field.
+- Protocol v3: the new `text` mode. A plugin and a binary from different
+  versions refuse each other.
+
+### Fixed
+- A host key prompt that lists many other names for the key no longer
+  loses its question to the 6-line limit: the question always stays on the
+  last line.
+
 ## [0.2.0] - 2026-10-02
 
 ### Added

@@ -33,7 +33,13 @@ fn is_deceptive(c: char) -> bool {
 /// collapse, and the result is cut at a character boundary to at most
 /// [`MAX_PROMPT_LINES`] lines and [`MAX_PROMPT_BYTES`] bytes.
 pub fn sanitize_prompt(text: &str) -> String {
-    let mut out = String::with_capacity(text.len().min(MAX_PROMPT_BYTES));
+    sanitize_prompt_within(text, MAX_PROMPT_LINES, MAX_PROMPT_BYTES)
+}
+
+/// [`sanitize_prompt`] with other limits, for text that shares the card
+/// with a line of our own. `max_lines` must be at least 1.
+pub fn sanitize_prompt_within(text: &str, max_lines: usize, max_bytes: usize) -> String {
+    let mut out = String::with_capacity(text.len().min(max_bytes));
     let mut lines = 1;
     let mut chars = text.chars().peekable();
     while let Some(mut c) = chars.next() {
@@ -49,14 +55,14 @@ pub fn sanitize_prompt(text: &str) -> String {
             if out.is_empty() || out.ends_with('\n') {
                 continue;
             }
-            if lines == MAX_PROMPT_LINES {
+            if lines == max_lines {
                 break;
             }
             lines += 1;
         } else if (c.is_control() && c != '\t') || is_deceptive(c) {
             continue;
         }
-        if out.len() + c.len_utf8() > MAX_PROMPT_BYTES {
+        if out.len() + c.len_utf8() > max_bytes {
             break;
         }
         out.push(c);
@@ -182,6 +188,13 @@ mod tests {
             MAX_PROMPT_BYTES - 2,
             "the 4-byte char doesn't fit"
         );
+    }
+
+    #[test]
+    fn other_limits_apply_the_same_way() {
+        assert_eq!(sanitize_prompt_within("a\nb\nc", 2, 100), "a\nb");
+        assert_eq!(sanitize_prompt_within("abc\u{202E}def", 6, 4), "abcd");
+        assert_eq!(sanitize_prompt_within("abc", 1, 0), "");
     }
 
     #[test]

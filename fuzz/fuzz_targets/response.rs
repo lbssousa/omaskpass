@@ -17,19 +17,22 @@ fuzz_target!(|data: &[u8]| {
     assert!(!buf[..end].contains(&b'\n'), "a response is one line");
 
     let granting_text = String::from_utf8_lossy(&buf[..end]).contains("\"ok\"");
-    for mode in [Mode::Passphrase, Mode::Confirm, Mode::Notify] {
+    for mode in [Mode::Passphrase, Mode::Confirm, Mode::Notify, Mode::Text] {
         let Ok(outcome) = parse_response(mode, &buf[..end]) else {
             continue;
         };
         match outcome {
             Outcome::Passphrase(pw) => {
-                assert_eq!(mode, Mode::Passphrase, "only a passphrase prompt prints");
+                assert!(
+                    matches!(mode, Mode::Passphrase | Mode::Text),
+                    "only a passphrase prompt or a question prints"
+                );
                 assert!(granting_text, "a grant needs an \"ok\" result");
                 // Percent-decoding only ever shrinks its input.
                 assert!(pw.len() <= end);
             }
             Outcome::Accepted => {
-                assert_ne!(mode, Mode::Passphrase);
+                assert!(matches!(mode, Mode::Confirm | Mode::Notify));
                 assert!(granting_text, "a grant needs an \"ok\" result");
             }
             Outcome::Rejected(Some(reason)) => assert!(!reason.text().is_empty()),
