@@ -9,8 +9,9 @@ Item {
 
   signal finished(string result, string password)
 
-  // "passphrase" (type and press Enter), "confirm" (Allow/Deny, for
-  // ssh-add -c) or "notify" (a message OpenSSH dismisses by killing us).
+  // "passphrase" (type and press Enter), "text" (the same, visibly, for
+  // OpenSSH's yes/no questions), "confirm" (Allow/Deny, for ssh-add -c) or
+  // "notify" (a message OpenSSH dismisses by killing us).
   property string mode: "passphrase"
   property string prompt: ""
   property bool shown: false
@@ -28,6 +29,7 @@ Item {
   readonly property int fieldHeight: Math.max(Style.space(42), Style.spacing.controlHeight)
   // OpenSSH's notifier for FIDO keys: "Confirm user presence for key …".
   readonly property bool touchMode: mode === "notify" && /user presence/i.test(prompt)
+  readonly property bool typed: mode === "passphrase" || mode === "text"
   readonly property int cardWidth: Math.min(Style.space(420), Math.max(Style.space(260), panel.width - Style.gapsOut * 2))
 
   function open(req) {
@@ -54,16 +56,16 @@ Item {
 
   function respond(result) {
     if (!shown) return
-    // Only an answered passphrase prompt hands the typed text over; a
-    // cancel or a confirmation never touches it.
-    var password = result === "ok" && mode === "passphrase" ? passwordField.input.text : ""
+    // Only an answered prompt hands the typed text over; a cancel or a
+    // confirmation never touches it.
+    var password = result === "ok" && typed ? passwordField.input.text : ""
     close()
     finished(result, password)
   }
 
   function refocus() {
     if (!shown) return
-    if (mode === "passphrase") passwordField.input.forceActiveFocus()
+    if (typed) passwordField.input.forceActiveFocus()
     else if (mode === "confirm") {
       if (!allowButton.activeFocus) denyButton.forceActiveFocus()
     } else keyCatcher.forceActiveFocus()
@@ -101,6 +103,10 @@ Item {
     id: field
     property alias input: textInput
     property string placeholder: ""
+    // false shows what's typed, for answers that aren't secrets.
+    property bool secret: true
+    // A lock for secrets, a fingerprint for host key questions.
+    property string icon: secret ? "" : "\udb80\ude37"
     signal accepted()
 
     width: parent.width
@@ -111,7 +117,7 @@ Item {
       spacing: Style.space(14)
 
       Text {
-        text: ""
+        text: field.icon
         color: root.errorFlash ? root.textError : root.accent
         font.family: root.fontFamily
         font.pixelSize: Style.font.iconLarge
@@ -135,9 +141,9 @@ Item {
           selectedTextColor: root.foreground
           font.family: root.fontFamily
           font.pixelSize: Style.font.iconLarge
-          echoMode: TextInput.Password
+          echoMode: field.secret ? TextInput.Password : TextInput.Normal
           passwordCharacter: "•"
-          inputMethodHints: Qt.ImhSensitiveData | Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
+          inputMethodHints: (field.secret ? Qt.ImhSensitiveData : 0) | Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
           color: root.errorFlash ? root.textError : root.foreground
           cursorVisible: activeFocus
           enabled: root.shown
@@ -225,9 +231,9 @@ Item {
             root.respond("cancel")
             event.accepted = true
           } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-            // Only the passphrase field submits on Enter; a confirmation
-            // takes an explicit Allow.
-            if (root.mode === "passphrase") root.respond("ok")
+            // Only the text field submits on Enter; a confirmation takes
+            // an explicit Allow.
+            if (root.typed) root.respond("ok")
             event.accepted = true
           }
         }
@@ -300,13 +306,16 @@ Item {
 
         PasswordField {
           id: passwordField
-          visible: root.mode === "passphrase"
-          placeholder: /\bPIN\b/.test(root.prompt) ? "PIN" : "Passphrase"
+          visible: root.typed
+          secret: root.mode !== "text"
+          placeholder: root.mode === "text"
+            ? (/fingerprint/.test(root.prompt.split("\n").pop()) ? "yes, no or the fingerprint" : "yes or no")
+            : /\bPIN\b/.test(root.prompt) ? "PIN" : "Passphrase"
           onAccepted: root.respond("ok")
         }
 
         Row {
-          visible: root.mode !== "passphrase" && !root.touchMode
+          visible: !root.typed && !root.touchMode
           anchors.right: parent.right
           spacing: Style.spacing.controlGap
 

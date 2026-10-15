@@ -5,8 +5,8 @@ import Quickshell.Io
 Item {
   id: root
 
-  readonly property int protocolVersion: 2
-  readonly property var modes: ["passphrase", "confirm", "notify"]
+  readonly property int protocolVersion: 3
+  readonly property var modes: ["passphrase", "confirm", "notify", "text"]
   // The binary cuts prompts to 2000 bytes, so a longer request isn't from it.
   readonly property int maxRequestBytes: 16384
   readonly property int maxPromptChars: 2000
@@ -59,7 +59,7 @@ Item {
     activeMode = ""
     if (!conn) return
     var response = { result: result }
-    if (result === "ok" && mode === "passphrase") {
+    if (result === "ok" && (mode === "passphrase" || mode === "text")) {
       try {
         response.password = encodeURIComponent(password)
       } catch (e) {

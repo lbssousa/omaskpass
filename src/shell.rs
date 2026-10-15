@@ -78,7 +78,8 @@ struct RawResponse<'a> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Outcome {
-    /// Print these bytes (the passphrase) and exit 0.
+    /// Print these bytes (the passphrase, or the answer to a question) and
+    /// exit 0.
     Passphrase(Zeroizing<Vec<u8>>),
     /// Exit 0 without printing anything.
     Accepted,
@@ -114,7 +115,7 @@ pub enum ResponseError {
     /// Not the JSON object the protocol defines (or the password has JSON
     /// escapes, which are refused on purpose).
     Invalid,
-    /// An "ok" for a passphrase prompt, with nothing to print.
+    /// An "ok" for a passphrase prompt or a question, with nothing to print.
     NothingToPrint,
 }
 
@@ -151,7 +152,7 @@ pub fn parse_response(mode: Mode, line: &[u8]) -> Result<Outcome, ResponseError>
         )));
     }
     match mode {
-        Mode::Passphrase => {
+        Mode::Passphrase | Mode::Text => {
             let Some(encoded) = raw.password else {
                 return Err(ResponseError::NothingToPrint);
             };
@@ -233,6 +234,16 @@ mod tests {
     }
 
     #[test]
+    fn a_question_prints_its_answer() {
+        let out = parse_response(Mode::Text, br#"{"result":"ok","password":"yes"}"#).unwrap();
+        assert_eq!(out, Outcome::Passphrase(Zeroizing::new(b"yes".to_vec())));
+        assert_eq!(
+            parse_response(Mode::Text, br#"{"result":"ok"}"#),
+            Err(ResponseError::NothingToPrint)
+        );
+    }
+
+    #[test]
     fn confirm_ok_prints_nothing() {
         let out = parse_response(Mode::Confirm, br#"{"result":"ok","password":"x"}"#).unwrap();
         assert_eq!(out, Outcome::Accepted);
@@ -248,7 +259,7 @@ mod tests {
 
     #[test]
     fn anything_but_ok_is_rejected_in_every_mode() {
-        for mode in [Mode::Passphrase, Mode::Confirm, Mode::Notify] {
+        for mode in [Mode::Passphrase, Mode::Confirm, Mode::Notify, Mode::Text] {
             for result in [
                 "cancel", "busy", "error", "timeout", "OK", "Ok", "okay", "", "allow",
             ] {

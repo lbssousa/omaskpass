@@ -31,8 +31,10 @@ fn main() {
         .map(|arg| arg.to_string_lossy().into_owned())
         .unwrap_or_else(|| match mode {
             Mode::Passphrase => "Enter password:".into(),
-            Mode::Confirm | Mode::Notify => String::new(),
+            Mode::Confirm | Mode::Notify | Mode::Text => String::new(),
         });
+    // OpenSSH sends no hint for its yes/no questions; their text tells.
+    let mode = mode.for_prompt(&prompt);
 
     let mut stream = match connect() {
         Ok(s) => s,

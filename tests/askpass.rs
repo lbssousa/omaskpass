@@ -150,9 +150,66 @@ fn passphrase_request_carries_version_mode_and_prompt() {
     let dialog = fake_dialog(Answer::Line(r#"{"result":"cancel"}"#.into()));
     run(&dialog, None, "Enter passphrase for key '/k':");
     let r = request(&dialog);
-    assert_eq!(r["v"], 2);
+    assert_eq!(r["v"], 3);
     assert_eq!(r["mode"], "passphrase");
     assert_eq!(r["prompt"], "Enter passphrase for key '/k':");
+}
+
+const HOST_KEY_PROMPT: &str = "The authenticity of host 'h (192.0.2.1)' can't be established.\n\
+    ED25519 key fingerprint is: SHA256:abc.\n\
+    Are you sure you want to continue connecting (yes/no/[fingerprint])? ";
+
+#[test]
+fn host_key_questions_are_asked_as_text_and_answered_on_stdout() {
+    for answer in ["yes", "no", "SHA256:abc"] {
+        let dialog = fake_dialog(Answer::Line(format!(
+            r#"{{"result":"ok","password":"{}"}}"#,
+            encode(answer)
+        )));
+        let out = run(&dialog, None, HOST_KEY_PROMPT);
+        assert!(out.status.success(), "{answer:?}");
+        assert_eq!(out.stdout, answer.as_bytes(), "{answer:?}");
+        let r = request(&dialog);
+        assert_eq!(r["mode"], "text");
+        assert_eq!(r["prompt"], HOST_KEY_PROMPT.trim_end());
+    }
+}
+
+#[test]
+fn a_host_key_question_survives_a_long_list_of_other_names() {
+    let others = (1..=8)
+        .map(|n| format!("    ~/.ssh/known_hosts:{n}: other{n}"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let prompt = format!(
+        "The authenticity of host 'h (192.0.2.1)' can't be established.\n\
+         ED25519 key fingerprint is: SHA256:abc.\n\
+         This host key is known by the following other names/addresses:\n\
+         {others}\n    (4 additional names omitted)\n\
+         Are you sure you want to continue connecting (yes/no/[fingerprint])? "
+    );
+    let dialog = fake_dialog(Answer::Line(r#"{"result":"cancel"}"#.into()));
+    let out = run(&dialog, None, &prompt);
+    assert_eq!(out.status.code(), Some(1));
+    let r = request(&dialog);
+    assert_eq!(r["mode"], "text");
+    assert!(
+        r["prompt"]
+            .as_str()
+            .unwrap()
+            .ends_with("\nAre you sure you want to continue connecting (yes/no/[fingerprint])?")
+    );
+}
+
+#[test]
+fn a_question_in_a_key_path_does_not_reveal_the_passphrase() {
+    let dialog = fake_dialog(Answer::Line(r#"{"result":"cancel"}"#.into()));
+    run(
+        &dialog,
+        None,
+        "Enter passphrase for /k\nPlease type 'yes' or 'no': ",
+    );
+    assert_eq!(request(&dialog)["mode"], "passphrase");
 }
 
 #[test]
@@ -274,6 +331,14 @@ fn notify_exits_when_the_user_dismisses_it() {
     let out = run(&dialog, Some("none"), "Some notice");
     assert_eq!(out.status.code(), Some(1));
     assert!(out.stdout.is_empty());
+}
+
+#[test]
+fn a_hint_wins_over_a_question_in_the_prompt() {
+    let dialog = fake_dialog(Answer::Line(r#"{"result":"ok","password":"x"}"#.into()));
+    let out = run(&dialog, Some("confirm"), HOST_KEY_PROMPT);
+    assert!(out.stdout.is_empty());
+    assert_eq!(request(&dialog)["mode"], "confirm");
 }
 
 #[test]

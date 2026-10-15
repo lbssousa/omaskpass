@@ -5,7 +5,7 @@
 #![no_main]
 
 use libfuzzer_sys::fuzz_target;
-use ssh_askpass_omarchy::request::{Mode, encode_request};
+use ssh_askpass_omarchy::request::{Mode, encode_request, shown_prompt};
 use ssh_askpass_omarchy::text::{MAX_PROMPT_BYTES, MAX_PROMPT_LINES, sanitize_prompt};
 
 fuzz_target!(|text: &str| {
@@ -26,10 +26,15 @@ fuzz_target!(|text: &str| {
     }
     assert_eq!(sanitize_prompt(&out), out);
 
-    // The request is always exactly one JSON line.
-    for mode in [Mode::Passphrase, Mode::Confirm, Mode::Notify] {
+    // The request is always exactly one JSON line, and a question's prompt
+    // keeps the same limits.
+    for mode in [Mode::Passphrase, Mode::Confirm, Mode::Notify, Mode::Text] {
         let line = encode_request(mode, text);
         assert_eq!(line.iter().filter(|&&b| b == b'\n').count(), 1);
         assert_eq!(line.last(), Some(&b'\n'));
+        let prompt = shown_prompt(mode, text);
+        assert!(prompt.len() <= MAX_PROMPT_BYTES);
+        assert!(prompt.lines().count() <= MAX_PROMPT_LINES);
+        assert_eq!(sanitize_prompt(&prompt), prompt, "{mode:?}");
     }
 });
