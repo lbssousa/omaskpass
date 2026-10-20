@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "lbssousa.omaskpass",
   "name": "Omaskpass",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Laércio de Sousa",
   "description": "Theme-aware SSH Askpass dialog (passphrases, ssh-add -c confirmations and security key touch prompts), styled like the polkit agent.",
   "kinds": [
