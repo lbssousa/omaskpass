@@ -1,6 +1,7 @@
 set shell := ["bash", "-uc"]
 
 dev_socket := env("XDG_RUNTIME_DIR", "/run/user/1000") / "omaskpass-dev.sock"
+plugin_link := env("HOME") / ".config/omarchy/plugins/lbssousa.omaskpass"
 
 default:
     @just --list
@@ -44,3 +45,19 @@ try mode="passphrase":
       touch) SSH_ASKPASS_PROMPT=none timeout -s TERM 5 target/debug/omaskpass "Confirm user presence for key ED25519-SK SHA256:example"; echo "exit $?" ;; \
       *) echo "unknown mode: {{mode}}" >&2; exit 1 ;; \
     esac
+
+# Load this checkout's plugin in the real shell (restarts omarchy-shell: a
+# keepLoaded service survives plugin hot-reloads).
+link:
+    ln -sfn "$PWD/plugin" {{plugin_link}}
+    omarchy-shell shell enablePlugin lbssousa.omaskpass '{}'
+    omarchy-restart-shell
+
+# Build the Arch package into packaging/. --nodeps: cargo usually comes from
+# rustup in ~/.cargo, which pacman doesn't know about.
+pkg:
+    cd packaging && makepkg -f --nodeps
+
+# Build the Nix package (flake.nix) into ./result, running the tests too.
+nix:
+    nix build -L

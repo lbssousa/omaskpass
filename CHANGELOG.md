@@ -7,6 +7,14 @@ tagged.
 
 ## [Unreleased]
 
+### Added
+- Packaging: an Arch package (`packaging/PKGBUILD`, `just pkg`) and a Nix
+  flake (`flake.nix`, `nix/package.nix`, `just nix`) with
+  `packages.<system>.default`, `overlays.default`, a dev shell and
+  `nix flake check`. Both install the binary as `bin/omaskpass` and the
+  shell plugin under `share/omaskpass/plugin`, the same layout as omapin.
+- `just link` loads the checkout's plugin in the real shell.
+
 ## [0.3.0] - 2026-10-20
 
 ### Changed

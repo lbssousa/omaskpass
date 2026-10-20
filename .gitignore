@@ -1,2 +1,6 @@
 /target
 **/*.rs.bk
+/result
+/packaging/*
+!/packaging/PKGBUILD
+!/packaging/omaskpass.install
