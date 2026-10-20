@@ -7,7 +7,7 @@ key may sign, so changes are held to a few firm rules.
 
 - **Bugs and feature requests:** open a
   [GitHub issue](https://github.com/lbssousa/omaskpass/issues).
-  Include the version (`Cargo.toml`), your Omarchy version
+  Include the version (`pacman -Q omaskpass`), your Omarchy version
   (`pacman -Q omarchy`), what you did, what you expected, and what happened.
 - **Security vulnerabilities:** **never** report them in a public issue.
   Follow [SECURITY.md](SECURITY.md) and use GitHub's private vulnerability

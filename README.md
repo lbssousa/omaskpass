@@ -85,13 +85,63 @@ vulnerability. In short:
   soon as the answer is sent. This is the same trade-off as the polkit
   dialog.
 
-## Environment Variables
+## Install
 
-To use this with SSH, you need to set the `SSH_ASKPASS` and `SSH_ASKPASS_REQUIRE` variables.
-```bash
-export SSH_ASKPASS=/path/to/omaskpass
-export SSH_ASKPASS_REQUIRE=prefer
+There are two packages, which install the same files under their prefix:
+the binary (`bin/omaskpass`) and the shell plugin (`share/omaskpass/plugin`).
+
+### Arch/Omarchy (PKGBUILD)
+
+```sh
+just pkg                                  # packaging/omaskpass-*.pkg.tar.zst
+sudo pacman -U packaging/omaskpass-*.pkg.tar.zst
 ```
+
+The prefix is `/usr`.
+
+### Nix (flake)
+
+```sh
+nix profile add github:lbssousa/omaskpass
+```
+
+The prefix is `~/.nix-profile`. In a flake, use `packages.<system>.default`
+or the `overlays.default` overlay (`pkgs.omaskpass`).
+
+### Per user
+
+With `prefix` set to `/usr` or `$HOME/.nix-profile`:
+
+```sh
+ln -sfn "$prefix/share/omaskpass/plugin" ~/.config/omarchy/plugins/lbssousa.omaskpass
+omarchy-shell shell enablePlugin lbssousa.omaskpass '{}'
+mkdir -p ~/.config/environment.d
+printf 'SSH_ASKPASS=%s\nSSH_ASKPASS_REQUIRE=prefer\n' "$prefix/bin/omaskpass" \
+  > ~/.config/environment.d/90-ssh-askpass.conf
+```
+
+Then log in again, so that the session (and ssh-agent) gets
+`SSH_ASKPASS`. `SSH_ASKPASS_REQUIRE=prefer` makes ssh use the askpass even
+when it runs in a terminal.
+
+## Releases
+
+`main` only takes squash-merged pull requests, which GitHub signs with its
+own key. A release is therefore a **GPG-signed tag** made by the maintainer
+on the merged commit. Check one with `git verify-tag vX.Y.Z` after
+importing the maintainer's public key.
+
+1. Open a PR that bumps the version in `Cargo.toml` (then run
+   `cargo update -w`), `packaging/PKGBUILD` and `plugin/manifest.json`.
+   The same PR turns the "Unreleased" section of
+   [CHANGELOG.md](CHANGELOG.md) into the new version's release notes.
+   Merge it.
+2. Tag the merge commit and push the tag:
+   ```sh
+   git switch main && git pull
+   git tag -s vX.Y.Z -m "omaskpass X.Y.Z"
+   git push origin vX.Y.Z
+   ```
 
 ## Development
 
@@ -102,25 +152,9 @@ export SSH_ASKPASS_REQUIRE=prefer
 | `just fuzz [target] [secs]` | Fuzzes the reply parser, the prompt cleaner or the passphrase decoder with cargo-fuzz (needs nightly Rust and `cargo install cargo-fuzz`) |
 | `just dev` | Runs the dialog in a separate Quickshell instance (`dev/`, which links the shell's `Commons`/`Ui`) on its own socket |
 | `just try [mode]` | Sends a sample `passphrase`, `confirm`, `hostkey` or `touch` request through the `just dev` instance |
-
-## Releases
-
-`main` only takes squash-merged pull requests, which GitHub signs with its
-own key. A release is therefore a **GPG-signed tag** made by the maintainer
-on the merged commit. Check one with `git verify-tag vX.Y.Z` after
-importing the maintainer's public key.
-
-1. Open a PR that bumps the version in `Cargo.toml` (then run
-   `cargo update -w`) and `plugin/manifest.json`.
-   The same PR turns the "Unreleased" section of
-   [CHANGELOG.md](CHANGELOG.md) into the new version's release notes.
-   Merge it.
-2. Tag the merge commit and push the tag:
-   ```sh
-   git switch main && git pull
-   git tag -s vX.Y.Z -m "omaskpass X.Y.Z"
-   git push origin vX.Y.Z
-   ```
+| `just link` | Loads this checkout's plugin in the real shell (restarts omarchy-shell) |
+| `just pkg` | Builds the Arch package |
+| `just nix` | Builds the Nix package into `./result` (runs the tests too) |
 
 ## Feedback and contributing
 
