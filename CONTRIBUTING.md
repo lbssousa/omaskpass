@@ -1,4 +1,4 @@
-# Contributing to ssh-askpass-omarchy
+# Contributing to omaskpass
 
 Thanks for helping. This project handles SSH passphrases and FIDO PINs, and decides whether a
 key may sign, so changes are held to a few firm rules.
@@ -6,7 +6,7 @@ key may sign, so changes are held to a few firm rules.
 ## Reporting bugs and asking for features
 
 - **Bugs and feature requests:** open a
-  [GitHub issue](https://github.com/lbssousa/ssh-askpass-omarchy/issues).
+  [GitHub issue](https://github.com/lbssousa/omaskpass/issues).
   Include the version (`Cargo.toml`), your Omarchy version
   (`pacman -Q omarchy`), what you did, what you expected, and what happened.
 - **Security vulnerabilities:** **never** report them in a public issue.
