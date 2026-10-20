@@ -7,6 +7,8 @@ tagged.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-20
+
 ### Added
 - Packaging: an Arch package (`packaging/PKGBUILD`, `just pkg`) and a Nix
   flake (`flake.nix`, `nix/package.nix`, `just nix`) with
