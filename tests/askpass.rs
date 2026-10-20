@@ -10,7 +10,7 @@ use std::sync::mpsc;
 use std::thread;
 use std::time::{Duration, Instant};
 
-const BIN: &str = env!("CARGO_BIN_EXE_ssh-askpass-omarchy");
+const BIN: &str = env!("CARGO_BIN_EXE_omaskpass");
 
 /// What the fake dialog does with the next request.
 enum Answer {
@@ -72,7 +72,7 @@ fn fake_dialog(answer: Answer) -> FakeDialog {
 
 fn command(socket: &PathBuf, hint: Option<&str>) -> Command {
     let mut cmd = Command::new(BIN);
-    cmd.env("SSH_ASKPASS_OMARCHY_SOCKET", socket)
+    cmd.env("OMASKPASS_SOCKET", socket)
         .env_remove("SSH_ASKPASS_PROMPT")
         .stdin(Stdio::null())
         .stdout(Stdio::piped())

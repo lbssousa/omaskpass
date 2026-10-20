@@ -6,17 +6,15 @@ use std::io::{self, Write};
 use std::os::fd::AsFd;
 use std::process;
 
-use ssh_askpass_omarchy::request::{Mode, encode_request};
-use ssh_askpass_omarchy::secret;
-use ssh_askpass_omarchy::shell::{
-    MAX_RESPONSE_BYTES, Outcome, connect, parse_response, read_response_line,
-};
+use omaskpass::request::{Mode, encode_request};
+use omaskpass::secret;
+use omaskpass::shell::{MAX_RESPONSE_BYTES, Outcome, connect, parse_response, read_response_line};
 use zeroize::Zeroizing;
 
 /// Reports a failure and exits. Only our own fixed texts and errors from
 /// the operating system get here; nothing the dialog sent does.
 fn fail(msg: impl std::fmt::Display) -> ! {
-    eprintln!("ssh-askpass-omarchy: {msg}");
+    eprintln!("omaskpass: {msg}");
     process::exit(1);
 }
 

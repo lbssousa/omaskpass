@@ -1,6 +1,6 @@
 set shell := ["bash", "-uc"]
 
-dev_socket := env("XDG_RUNTIME_DIR", "/run/user/1000") / "ssh-askpass-omarchy-dev.sock"
+dev_socket := env("XDG_RUNTIME_DIR", "/run/user/1000") / "omaskpass-dev.sock"
 
 default:
     @just --list
@@ -30,17 +30,17 @@ fuzz target="response" secs="60":
 # Run the dialog in a separate Quickshell instance (dev/), listening on its
 # own socket, so QML edits only need this restarted — not omarchy-shell.
 dev:
-    SSH_ASKPASS_OMARCHY_SOCKET={{dev_socket}} quickshell -p dev
+    OMASKPASS_SOCKET={{dev_socket}} quickshell -p dev
 
 # Send a sample request (passphrase, confirm, touch or hostkey) through `just dev`.
 # touch stays up for 5s, then gets killed the way OpenSSH does it.
 try mode="passphrase":
     cargo build -q
-    export SSH_ASKPASS_OMARCHY_SOCKET={{dev_socket}}; \
+    export OMASKPASS_SOCKET={{dev_socket}}; \
     case "{{mode}}" in \
-      passphrase) target/debug/ssh-askpass-omarchy "Enter PIN for ED25519-SK key ~/.ssh/id_ed25519_sk:"; echo " (exit $?)" ;; \
-      confirm) SSH_ASKPASS_PROMPT=confirm target/debug/ssh-askpass-omarchy $'Allow use of key ~/.ssh/id_ed25519?\nKey fingerprint SHA256:example.'; echo "exit $?" ;; \
-      hostkey) target/debug/ssh-askpass-omarchy $'The authenticity of host \'example.com (192.0.2.1)\' can\'t be established.\nED25519 key fingerprint is: SHA256:example.\nAre you sure you want to continue connecting (yes/no/[fingerprint])? '; echo " (exit $?)" ;; \
-      touch) SSH_ASKPASS_PROMPT=none timeout -s TERM 5 target/debug/ssh-askpass-omarchy "Confirm user presence for key ED25519-SK SHA256:example"; echo "exit $?" ;; \
+      passphrase) target/debug/omaskpass "Enter PIN for ED25519-SK key ~/.ssh/id_ed25519_sk:"; echo " (exit $?)" ;; \
+      confirm) SSH_ASKPASS_PROMPT=confirm target/debug/omaskpass $'Allow use of key ~/.ssh/id_ed25519?\nKey fingerprint SHA256:example.'; echo "exit $?" ;; \
+      hostkey) target/debug/omaskpass $'The authenticity of host \'example.com (192.0.2.1)\' can\'t be established.\nED25519 key fingerprint is: SHA256:example.\nAre you sure you want to continue connecting (yes/no/[fingerprint])? '; echo " (exit $?)" ;; \
+      touch) SSH_ASKPASS_PROMPT=none timeout -s TERM 5 target/debug/omaskpass "Confirm user presence for key ED25519-SK SHA256:example"; echo "exit $?" ;; \
       *) echo "unknown mode: {{mode}}" >&2; exit 1 ;; \
     esac

@@ -5,8 +5,8 @@
 #![no_main]
 
 use libfuzzer_sys::fuzz_target;
-use ssh_askpass_omarchy::request::Mode;
-use ssh_askpass_omarchy::shell::{MAX_RESPONSE_BYTES, Outcome, parse_response, read_response_line};
+use omaskpass::request::Mode;
+use omaskpass::shell::{MAX_RESPONSE_BYTES, Outcome, parse_response, read_response_line};
 
 fuzz_target!(|data: &[u8]| {
     let mut buf = vec![0u8; MAX_RESPONSE_BYTES];
