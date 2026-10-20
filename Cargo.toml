@@ -1,5 +1,5 @@
 [package]
-name = "ssh-askpass-omarchy"
+name = "omaskpass"
 version = "0.2.0"
 edition = "2024"
 description = "SSH askpass that asks through an Omarchy shell dialog"

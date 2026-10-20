@@ -1,18 +1,24 @@
-# ssh-askpass-omarchy
+# omaskpass
 
-[![ci](https://github.com/lbssousa/ssh-askpass-omarchy/actions/workflows/ci.yml/badge.svg)](https://github.com/lbssousa/ssh-askpass-omarchy/actions/workflows/ci.yml)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/lbssousa/ssh-askpass-omarchy/badge)](https://scorecard.dev/viewer/?uri=github.com/lbssousa/ssh-askpass-omarchy)
+[![ci](https://github.com/lbssousa/omaskpass/actions/workflows/ci.yml/badge.svg)](https://github.com/lbssousa/omaskpass/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/lbssousa/omaskpass/badge)](https://scorecard.dev/viewer/?uri=github.com/lbssousa/omaskpass)
 
 An SSH Askpass dialog for the Omarchy shell, styled like the polkit agent.
 It asks for passphrases and FIDO PINs, asks OpenSSH's yes/no host key
 questions, confirms `ssh-add -c` key uses, and shows security key touch
 requests, in the same overlay as the shell's polkit agent.
 
+omaskpass was called **ssh-askpass-omarchy** until 0.2.0. The binary,
+socket, environment variable (`SSH_ASKPASS_OMARCHY_SOCKET` →
+`OMASKPASS_SOCKET`) and shell plugin (`lbssousa.ssh_askpass` →
+`lbssousa.omaskpass`) were renamed with it; see
+[CHANGELOG.md](CHANGELOG.md) for upgrading.
+
 ## How it works
 
 This consists of two parts:
-1. An Omarchy (Quickshell) plugin (`lbssousa.ssh_askpass`) that listens on a UNIX socket for passphrase requests and displays the UI dialog.
-2. A Rust binary (`ssh-askpass-omarchy`) that is executed by OpenSSH. It receives the prompt message as an argument, forwards it to the plugin's socket via JSON, waits for the user input, and outputs the resulting passphrase to stdout.
+1. An Omarchy (Quickshell) plugin (`lbssousa.omaskpass`) that listens on a UNIX socket for passphrase requests and displays the UI dialog.
+2. A Rust binary (`omaskpass`) that is executed by OpenSSH. It receives the prompt message as an argument, forwards it to the plugin's socket via JSON, waits for the user input, and outputs the resulting passphrase to stdout.
 
 ## Modes
 
@@ -43,8 +49,7 @@ needs `SSH_ASKPASS` in its environment too. Agents that don't run an askpass
 
 Stock OpenSSH also prints the touch request to the terminal, instead of
 running the askpass, whenever ssh runs in one, even with
-`SSH_ASKPASS_REQUIRE=prefer`. [omarchy-setup](https://github.com/lbssousa/omarchy-setup)
-carries a small OpenSSH patch for that (`just openssh-askpass`).
+`SSH_ASKPASS_REQUIRE=prefer`.
 
 ### Protocol between the two halves (v3)
 
@@ -84,7 +89,7 @@ vulnerability. In short:
 
 To use this with SSH, you need to set the `SSH_ASKPASS` and `SSH_ASKPASS_REQUIRE` variables.
 ```bash
-export SSH_ASKPASS=/path/to/ssh-askpass-omarchy
+export SSH_ASKPASS=/path/to/omaskpass
 export SSH_ASKPASS_REQUIRE=prefer
 ```
 
@@ -113,13 +118,13 @@ importing the maintainer's public key.
 2. Tag the merge commit and push the tag:
    ```sh
    git switch main && git pull
-   git tag -s vX.Y.Z -m "ssh-askpass-omarchy X.Y.Z"
+   git tag -s vX.Y.Z -m "omaskpass X.Y.Z"
    git push origin vX.Y.Z
    ```
 
 ## Feedback and contributing
 
-- **Bugs and feature requests:** [GitHub issues](https://github.com/lbssousa/ssh-askpass-omarchy/issues).
+- **Bugs and feature requests:** [GitHub issues](https://github.com/lbssousa/omaskpass/issues).
 - **Security vulnerabilities:** report them privately, as described in
   [SECURITY.md](SECURITY.md).
 - **Contributions:** pull requests are welcome. See

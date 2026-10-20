@@ -7,14 +7,14 @@ Only the latest release on `main` gets security fixes.
 ## Reporting a vulnerability
 
 Please report vulnerabilities privately through GitHub's
-[private vulnerability reporting](https://github.com/lbssousa/ssh-askpass-omarchy/security/advisories/new),
+[private vulnerability reporting](https://github.com/lbssousa/omaskpass/security/advisories/new),
 not in a public issue. Include the version (in `Cargo.toml`), your Omarchy
 version (`pacman -Q omarchy`), what you did, and what happened. You should
 get an answer within a week.
 
 ## Threat model
 
-ssh-askpass-omarchy asks for SSH key passphrases and FIDO PINs, confirms
+omaskpass asks for SSH key passphrases and FIDO PINs, confirms
 `ssh-add -c` key uses, and shows security key touch requests, on behalf of
 OpenSSH. The main assets are the passphrase or PIN and the decision to
 allow a key to sign. A PIN that reaches a security key corrupted also costs

@@ -5,8 +5,8 @@
 #![no_main]
 
 use libfuzzer_sys::fuzz_target;
-use ssh_askpass_omarchy::request::{Mode, encode_request, shown_prompt};
-use ssh_askpass_omarchy::text::{MAX_PROMPT_BYTES, MAX_PROMPT_LINES, sanitize_prompt};
+use omaskpass::request::{Mode, encode_request, shown_prompt};
+use omaskpass::text::{MAX_PROMPT_BYTES, MAX_PROMPT_LINES, sanitize_prompt};
 
 fuzz_target!(|text: &str| {
     let out = sanitize_prompt(text);

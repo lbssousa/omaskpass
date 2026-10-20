@@ -78,7 +78,7 @@ Item {
 
   SocketServer {
     active: true
-    path: Quickshell.env("SSH_ASKPASS_OMARCHY_SOCKET") || (Quickshell.env("XDG_RUNTIME_DIR") + "/ssh-askpass-omarchy.sock")
+    path: Quickshell.env("OMASKPASS_SOCKET") || (Quickshell.env("XDG_RUNTIME_DIR") + "/omaskpass.sock")
     handler: Socket {
       id: conn
       property bool handled: false

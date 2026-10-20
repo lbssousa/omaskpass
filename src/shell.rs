@@ -16,13 +16,13 @@ use crate::text::percent_decode_into;
 pub const MAX_RESPONSE_BYTES: usize = 64 * 1024;
 
 pub fn socket_path() -> PathBuf {
-    if let Some(p) = env::var_os("SSH_ASKPASS_OMARCHY_SOCKET") {
+    if let Some(p) = env::var_os("OMASKPASS_SOCKET") {
         return PathBuf::from(p);
     }
     let runtime = env::var_os("XDG_RUNTIME_DIR")
         .map(PathBuf::from)
         .unwrap_or_else(|| PathBuf::from(format!("/run/user/{}", getuid())));
-    runtime.join("ssh-askpass-omarchy.sock")
+    runtime.join("omaskpass.sock")
 }
 
 /// Connects and makes sure the listening end belongs to this user.

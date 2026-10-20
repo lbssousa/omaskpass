@@ -7,6 +7,21 @@ tagged.
 
 ## [Unreleased]
 
+### Changed
+- Renamed from ssh-askpass-omarchy to omaskpass, along with the GitHub
+  repository (`lbssousa/omaskpass`; the old URL redirects). Everything
+  named after the project changes with it:
+  - binary: `omaskpass`;
+  - socket: `$XDG_RUNTIME_DIR/omaskpass.sock`;
+  - environment variable: `OMASKPASS_SOCKET`;
+  - shell plugin id: `lbssousa.omaskpass`;
+  - Wayland layer namespace of the dialog: `omaskpass` (was
+    `omarchy-ssh-askpass`).
+
+  To upgrade, replace the `~/.config/omarchy/plugins/lbssousa.ssh_askpass`
+  link with one named `lbssousa.omaskpass`, enable `lbssousa.omaskpass`
+  and point `SSH_ASKPASS` at the new binary.
+
 ### Added
 - **Host key questions in plain text.** OpenSSH's yes/no questions
   ("Are you sure you want to continue connecting

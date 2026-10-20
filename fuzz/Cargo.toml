@@ -1,5 +1,5 @@
 [package]
-name = "ssh-askpass-omarchy-fuzz"
+name = "omaskpass-fuzz"
 version = "0.0.0"
 edition = "2024"
 publish = false
@@ -9,7 +9,7 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "0.4"
-ssh-askpass-omarchy = { path = ".." }
+omaskpass = { path = ".." }
 
 # Kept out of the main crate's build (and its cargo-deny graph).
 [workspace]

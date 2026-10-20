@@ -4,7 +4,7 @@
 #![no_main]
 
 use libfuzzer_sys::fuzz_target;
-use ssh_askpass_omarchy::text::percent_decode_into;
+use omaskpass::text::percent_decode_into;
 
 fn encode_uri_component(text: &str) -> String {
     text.bytes().fold(String::new(), |mut out, b| {
