@@ -108,6 +108,31 @@ nix profile add github:lbssousa/omaskpass
 The prefix is `~/.nix-profile`. In a flake, use `packages.<system>.default`
 or the `overlays.default` overlay (`pkgs.omaskpass`).
 
+The flake also has modules that do the per-user steps below, both as
+`programs.omaskpass`:
+
+- `homeModules.default` (Home Manager, also standalone on Omarchy):
+  installs the package, links the plugin into
+  `~/.config/omarchy/plugins/`, sets `SSH_ASKPASS` and
+  `SSH_ASKPASS_REQUIRE` (`programs.omaskpass.require`, `prefer` by
+  default) for login shells and, through `~/.config/environment.d`, the
+  systemd user session, and enables the plugin in the running shell on
+  activation (`programs.omaskpass.enablePlugin`).
+- `nixosModules.default`: installs the package, sets `SSH_ASKPASS`
+  (`programs.ssh.askPassword`) and `SSH_ASKPASS_REQUIRE`
+  (`programs.omaskpass.require`) for every session, and links the plugin
+  for every user (`systemd.user.tmpfiles`). Enable the plugin in the shell
+  yourself, or with the Home Manager module.
+
+```nix
+{
+  inputs.omaskpass.url = "github:lbssousa/omaskpass";
+  # Home Manager:
+  #   imports = [ inputs.omaskpass.homeModules.default ];
+  #   programs.omaskpass.enable = true;
+}
+```
+
 ### Per user
 
 With `prefix` set to `/usr` or `$HOME/.nix-profile`:

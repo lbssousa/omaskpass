@@ -22,6 +22,18 @@
         omaskpass = final.callPackage ./nix/package.nix { };
       };
 
+      # programs.omaskpass, for NixOS and for Home Manager.
+      nixosModules = {
+        omaskpass = ./nix/nixos-module.nix;
+        default = self.nixosModules.omaskpass;
+      };
+      homeModules = {
+        omaskpass = ./nix/home-module.nix;
+        default = self.homeModules.omaskpass;
+      };
+      # The older name of homeModules.
+      homeManagerModules = self.homeModules;
+
       # Building the package runs the test suite (cargo test).
       checks = forAllSystems (pkgs: {
         inherit (self.packages.${pkgs.stdenv.hostPlatform.system}) omaskpass;
