@@ -7,6 +7,8 @@ tagged.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-20
+
 ### Changed
 - Renamed from ssh-askpass-omarchy to omaskpass, along with the GitHub
   repository (`lbssousa/omaskpass`; the old URL redirects). Everything
