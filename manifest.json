@@ -4,7 +4,18 @@
   "name": "Omaskpass",
   "version": "0.3.1",
   "author": "Laércio de Sousa",
+  "license": "MIT",
   "description": "Theme-aware SSH Askpass dialog (passphrases, ssh-add -c confirmations and security key touch prompts), styled like the polkit agent.",
+  "homepage": "https://github.com/lbssousa/omaskpass",
+  "repository": "https://github.com/lbssousa/omaskpass",
+  "keywords": [
+    "ssh",
+    "askpass",
+    "passphrase",
+    "fido2",
+    "yubikey",
+    "security"
+  ],
   "kinds": [
     "service"
   ],

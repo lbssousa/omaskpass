@@ -7,7 +7,21 @@ tagged.
 
 ## [Unreleased]
 
+### Changed
+- The shell plugin moved from `plugin/` to the repository root
+  (`manifest.json`, `SshAskpassService.qml`, `SshAskpassDialog.qml`), so
+  the Omarchy plugin marketplace and `omarchy plugin add` can install it.
+  The packages install the same files to the same place
+  (`share/omaskpass/plugin`). The manifest gains `license`, `homepage`,
+  `repository` and `keywords`.
+- `dev/` no longer carries symlinks, which plugins may not have: `just dev`
+  and `just test-plugin` build their Quickshell folder in a temporary
+  directory. `just link` links the checkout itself and rescans the shell's
+  plugins.
+
 ### Added
+- README sections on installing the plugin alone (`omarchy plugin add`)
+  and on removing omaskpass.
 - Flake modules for NixOS (`nixosModules.default`) and Home Manager
   (`homeModules.default`, also as `homeManagerModules`), both as
   `programs.omaskpass`. They install the package and do the README's

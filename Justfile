@@ -28,10 +28,19 @@ fuzz target="response" secs="60":
     mkdir -p fuzz/corpus/{{target}}
     cargo +nightly fuzz run {{target}} fuzz/corpus/{{target}} fuzz/seeds/{{target}} -- -max_total_time={{secs}} -max_len=8192
 
-# Run the dialog in a separate Quickshell instance (dev/), listening on its
-# own socket, so QML edits only need this restarted — not omarchy-shell.
+# Run the dialog in a separate Quickshell instance, listening on its own
+# socket, so QML edits only need this restarted — not omarchy-shell. The
+# instance's folder is built in a temporary directory from dev/shell.qml, the
+# plugin's QML and the shell's Commons and Ui: plugins may not carry symlinks.
 dev:
-    OMASKPASS_SOCKET={{dev_socket}} quickshell -p dev
+    #!/usr/bin/env bash
+    set -eu
+    dir=$(mktemp -d)
+    trap 'rm -rf "$dir"' EXIT
+    for f in *.qml; do ln -s "$PWD/$f" "$dir/$f"; done
+    ln -s /usr/share/omarchy/shell/Commons /usr/share/omarchy/shell/Ui "$dir/"
+    cp dev/shell.qml "$dir/shell.qml"
+    OMASKPASS_SOCKET={{dev_socket}} quickshell -p "$dir"
 
 # Send a sample request (passphrase, confirm, touch or hostkey) through `just dev`.
 # touch stays up for 5s, then gets killed the way OpenSSH does it.
@@ -49,7 +58,8 @@ try mode="passphrase":
 # Load this checkout's plugin in the real shell (restarts omarchy-shell: a
 # keepLoaded service survives plugin hot-reloads).
 link:
-    ln -sfn "$PWD/plugin" {{plugin_link}}
+    ln -sfn "$PWD" {{plugin_link}}
+    omarchy-shell shell rescanPlugins
     omarchy-shell shell enablePlugin lbssousa.omaskpass '{}'
     omarchy-restart-shell
 

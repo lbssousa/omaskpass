@@ -17,7 +17,7 @@ socket, environment variable (`SSH_ASKPASS_OMARCHY_SOCKET` →
 ## How it works
 
 This consists of two parts:
-1. An Omarchy (Quickshell) plugin (`lbssousa.omaskpass`) that listens on a UNIX socket for passphrase requests and displays the UI dialog.
+1. An Omarchy (Quickshell) plugin (`lbssousa.omaskpass`: `manifest.json` and the QML files at the repository root) that listens on a UNIX socket for passphrase requests and displays the UI dialog.
 2. A Rust binary (`omaskpass`) that is executed by OpenSSH. It receives the prompt message as an argument, forwards it to the plugin's socket via JSON, waits for the user input, and outputs the resulting passphrase to stdout.
 
 ## Modes
@@ -87,8 +87,10 @@ vulnerability. In short:
 
 ## Install
 
-There are two packages, which install the same files under their prefix:
-the binary (`bin/omaskpass`) and the shell plugin (`share/omaskpass/plugin`).
+The askpass needs both halves: the `omaskpass` binary, which OpenSSH runs,
+and the shell plugin. There are two packages, which install the same files
+under their prefix: the binary (`bin/omaskpass`) and the shell plugin
+(`share/omaskpass/plugin`). Install one of them, then do the per-user steps.
 
 ### Arch/Omarchy (PKGBUILD)
 
@@ -149,6 +151,33 @@ Then log in again, so that the session (and ssh-agent) gets
 `SSH_ASKPASS`. `SSH_ASKPASS_REQUIRE=prefer` makes ssh use the askpass even
 when it runs in a terminal.
 
+### The plugin alone
+
+The repository root is also the plugin, so the Omarchy plugin marketplace
+and `omarchy plugin add` can install it:
+
+```sh
+omarchy plugin add https://github.com/lbssousa/omaskpass.git --enable
+```
+
+That installs only the dialog: it still needs the `omaskpass` binary from
+one of the packages above, and the `environment.d` file. Use either this
+or the package's link in `~/.config/omarchy/plugins/lbssousa.omaskpass`,
+not both. Update with `omarchy plugin update lbssousa.omaskpass`.
+
+## Remove
+
+Undo the per-user steps, then remove the package:
+
+```sh
+rm ~/.config/environment.d/90-ssh-askpass.conf
+omarchy plugin remove lbssousa.omaskpass   # unlinks the package's plugin, or deletes the cloned one
+sudo pacman -R omaskpass                    # or: nix profile remove omaskpass
+```
+
+With the flake modules, set `programs.omaskpass.enable = false` and switch
+instead. Log in again: ssh goes back to asking in the terminal.
+
 ## Releases
 
 `main` only takes squash-merged pull requests, which GitHub signs with its
@@ -157,7 +186,7 @@ on the merged commit. Check one with `git verify-tag vX.Y.Z` after
 importing the maintainer's public key.
 
 1. Open a PR that bumps the version in `Cargo.toml` (then run
-   `cargo update -w`), `packaging/PKGBUILD` and `plugin/manifest.json`.
+   `cargo update -w`), `packaging/PKGBUILD` and `manifest.json`.
    The same PR turns the "Unreleased" section of
    [CHANGELOG.md](CHANGELOG.md) into the new version's release notes.
    Merge it.
@@ -175,7 +204,7 @@ importing the maintainer's public key.
 | `just test` | Unit tests, integration tests against a fake dialog, `cargo fmt --check` and clippy |
 | `just test-plugin` | Protocol tests against the real QML plugin in a throwaway Quickshell instance (needs the Wayland session; dialogs flash on screen) |
 | `just fuzz [target] [secs]` | Fuzzes the reply parser, the prompt cleaner or the passphrase decoder with cargo-fuzz (needs nightly Rust and `cargo install cargo-fuzz`) |
-| `just dev` | Runs the dialog in a separate Quickshell instance (`dev/`, which links the shell's `Commons`/`Ui`) on its own socket |
+| `just dev` | Runs the dialog in a separate Quickshell instance on its own socket (from `dev/shell.qml`, built in a temporary folder that links the plugin's QML and the shell's `Commons`/`Ui`; the checkout carries no symlinks, which plugins may not have) |
 | `just try [mode]` | Sends a sample `passphrase`, `confirm`, `hostkey` or `touch` request through the `just dev` instance |
 | `just link` | Loads this checkout's plugin in the real shell (restarts omarchy-shell) |
 | `just pkg` | Builds the Arch package |
