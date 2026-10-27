@@ -7,6 +7,8 @@ tagged.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-27
+
 ### Changed
 - The shell plugin moved from `plugin/` to the repository root
   (`manifest.json`, `SshAskpassService.qml`, `SshAskpassDialog.qml`), so
