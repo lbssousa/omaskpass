@@ -19,7 +19,9 @@ rustPlatform.buildRustPackage {
       ../Cargo.lock
       ../src
       ../tests
-      ../plugin
+      ../manifest.json
+      ../SshAskpassDialog.qml
+      ../SshAskpassService.qml
     ];
   };
 
@@ -29,7 +31,7 @@ rustPlatform.buildRustPackage {
   nativeCheckInputs = [ util-linux ];
 
   postInstall = ''
-    install -Dm644 -t $out/share/omaskpass/plugin plugin/manifest.json plugin/*.qml
+    install -Dm644 -t $out/share/omaskpass/plugin manifest.json SshAskpassDialog.qml SshAskpassService.qml
   '';
 
   meta = {

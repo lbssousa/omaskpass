@@ -1,16 +1,21 @@
-//! Exercises the real QML plugin in a Quickshell instance built from dev/.
-//! Needs a Wayland session with Omarchy installed (dev/ links the shell's
-//! Commons and Ui), and briefly flashes dialogs on screen, so it is
-//! ignored by default: run it with `just test-plugin`.
+//! Exercises the real QML plugin in a Quickshell instance built, like
+//! `just dev`, in a temporary folder from dev/shell.qml, the plugin's QML
+//! and the shell's Commons and Ui. Needs a Wayland session with Omarchy
+//! installed, and briefly flashes dialogs on screen, so it is ignored by
+//! default: run it with `just test-plugin`.
 
+use std::fs;
 use std::io::{ErrorKind, Read, Write};
+use std::os::unix::fs::symlink;
 use std::os::unix::net::UnixStream;
 use std::path::Path;
 use std::process::{Child, Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
 
-struct Shell(Child);
+/// The Quickshell instance and the folder it runs from (removed on drop,
+/// after the instance).
+struct Shell(Child, #[allow(dead_code)] tempfile::TempDir);
 
 impl Drop for Shell {
     fn drop(&mut self) {
@@ -19,17 +24,36 @@ impl Drop for Shell {
     }
 }
 
+/// The plugin may not carry symlinks, so the instance's folder links the
+/// checkout's QML and the shell's modules from a temporary directory.
+fn instance_dir() -> tempfile::TempDir {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let dir = tempfile::tempdir().unwrap();
+    for name in ["SshAskpassService.qml", "SshAskpassDialog.qml"] {
+        symlink(root.join(name), dir.path().join(name)).unwrap();
+    }
+    for module in ["Commons", "Ui"] {
+        symlink(
+            Path::new("/usr/share/omarchy/shell").join(module),
+            dir.path().join(module),
+        )
+        .unwrap();
+    }
+    fs::copy(root.join("dev/shell.qml"), dir.path().join("shell.qml")).unwrap();
+    dir
+}
+
 fn start_shell(socket: &Path) -> Shell {
-    let dev = Path::new(env!("CARGO_MANIFEST_DIR")).join("dev");
+    let dir = instance_dir();
     let child = Command::new("quickshell")
         .arg("-p")
-        .arg(dev)
+        .arg(dir.path())
         .env("OMASKPASS_SOCKET", socket)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .spawn()
         .expect("quickshell must be installed");
-    let shell = Shell(child);
+    let shell = Shell(child, dir);
     let deadline = Instant::now() + Duration::from_secs(15);
     while UnixStream::connect(socket).is_err() {
         assert!(
