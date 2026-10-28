@@ -7,6 +7,8 @@ tagged.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-28
+
 ### Changed
 - The Arch package installs only the `omaskpass` binary, no longer a copy of
   the shell plugin in `/usr/share/omaskpass/plugin`: on Omarchy the plugin
