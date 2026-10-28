@@ -2,7 +2,9 @@
 #
 # Builds from the repository this PKGBUILD lives in (the parent of
 # $startdir), so `makepkg` in packaging/ packages the working tree as is.
-# nix/package.nix (flake.nix) installs the same files.
+# Only the binary: on Omarchy the shell plugin comes from the Omarchy
+# plugin marketplace (`omarchy plugin add`). nix/package.nix (flake.nix)
+# also installs the plugin, which the flake's modules link.
 
 pkgname=omaskpass
 pkgver=0.4.0
@@ -38,7 +40,6 @@ check() {
 package() {
   _srcroot
   install -Dm755 "$srcdir/target/release/omaskpass" "$pkgdir/usr/bin/omaskpass"
-  install -Dm644 -t "$pkgdir/usr/share/omaskpass/plugin" manifest.json SshAskpassDialog.qml SshAskpassService.qml
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }

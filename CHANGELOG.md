@@ -7,6 +7,15 @@ tagged.
 
 ## [Unreleased]
 
+### Changed
+- The Arch package installs only the `omaskpass` binary, no longer a copy of
+  the shell plugin in `/usr/share/omaskpass/plugin`: on Omarchy the plugin
+  comes from the Omarchy plugin marketplace (`omarchy plugin add
+  https://github.com/lbssousa/omaskpass.git`), as the install message and
+  the README now say. Before upgrading, replace a link to the old copy
+  with the marketplace's clone. The Nix package still ships the plugin
+  for the flake's modules.
+
 ## [0.4.0] - 2026-10-27
 
 ### Changed

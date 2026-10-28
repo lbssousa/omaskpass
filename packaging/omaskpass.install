@@ -1,8 +1,8 @@
 post_install() {
   cat <<'EOF'
-==> The shell plugin is not enabled per user automatically. For each user:
-      ln -sfn /usr/share/omaskpass/plugin ~/.config/omarchy/plugins/lbssousa.omaskpass
-      omarchy-shell shell enablePlugin lbssousa.omaskpass '{}'
+==> This package is only the binary. For each user, install the shell
+    plugin from the Omarchy plugin marketplace and set omaskpass up:
+      omarchy plugin add https://github.com/lbssousa/omaskpass.git --enable
       mkdir -p ~/.config/environment.d
       printf 'SSH_ASKPASS=/usr/bin/omaskpass\nSSH_ASKPASS_REQUIRE=prefer\n' > ~/.config/environment.d/90-ssh-askpass.conf
     then log in again.
@@ -10,5 +10,5 @@ EOF
 }
 
 post_upgrade() {
-  echo '==> Restart the shell (omarchy-restart-shell) to load the updated dialog.'
+  echo '==> Update the shell plugin too: omarchy plugin update lbssousa.omaskpass'
 }

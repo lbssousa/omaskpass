@@ -88,9 +88,11 @@ vulnerability. In short:
 ## Install
 
 The askpass needs both halves: the `omaskpass` binary, which OpenSSH runs,
-and the shell plugin. There are two packages, which install the same files
-under their prefix: the binary (`bin/omaskpass`) and the shell plugin
-(`share/omaskpass/plugin`). Install one of them, then do the per-user steps.
+and the shell plugin. The Arch package installs only the binary
+(`bin/omaskpass`): on Omarchy the plugin comes from the Omarchy plugin
+marketplace (see [The plugin](#the-plugin)). The Nix package installs
+both, the plugin in `share/omaskpass/plugin`, which the flake's modules
+link. Install one of them, then do the per-user steps.
 
 ### Arch/Omarchy (PKGBUILD)
 
@@ -140,8 +142,7 @@ The flake also has modules that do the per-user steps below, both as
 With `prefix` set to `/usr` or `$HOME/.nix-profile`:
 
 ```sh
-ln -sfn "$prefix/share/omaskpass/plugin" ~/.config/omarchy/plugins/lbssousa.omaskpass
-omarchy-shell shell enablePlugin lbssousa.omaskpass '{}'
+omarchy plugin add https://github.com/lbssousa/omaskpass.git --enable   # the plugin, see below
 mkdir -p ~/.config/environment.d
 printf 'SSH_ASKPASS=%s\nSSH_ASKPASS_REQUIRE=prefer\n' "$prefix/bin/omaskpass" \
   > ~/.config/environment.d/90-ssh-askpass.conf
@@ -151,7 +152,7 @@ Then log in again, so that the session (and ssh-agent) gets
 `SSH_ASKPASS`. `SSH_ASKPASS_REQUIRE=prefer` makes ssh use the askpass even
 when it runs in a terminal.
 
-### The plugin alone
+### The plugin
 
 The repository root is also the plugin, so the Omarchy plugin marketplace
 and `omarchy plugin add` can install it:
@@ -161,9 +162,10 @@ omarchy plugin add https://github.com/lbssousa/omaskpass.git --enable
 ```
 
 That installs only the dialog: it still needs the `omaskpass` binary from
-one of the packages above, and the `environment.d` file. Use either this
-or the package's link in `~/.config/omarchy/plugins/lbssousa.omaskpass`,
-not both. Update with `omarchy plugin update lbssousa.omaskpass`.
+one of the packages above, and the `environment.d` file. With the Nix
+package, link its `share/omaskpass/plugin` there instead (the flake's
+modules do), not both. Update with `omarchy plugin update
+lbssousa.omaskpass`.
 
 ## Remove
 
@@ -171,7 +173,7 @@ Undo the per-user steps, then remove the package:
 
 ```sh
 rm ~/.config/environment.d/90-ssh-askpass.conf
-omarchy plugin remove lbssousa.omaskpass   # unlinks the package's plugin, or deletes the cloned one
+omarchy plugin remove lbssousa.omaskpass   # deletes the cloned plugin, or unlinks the Nix one
 sudo pacman -R omaskpass                    # or: nix profile remove omaskpass
 ```
 
