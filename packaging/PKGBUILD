@@ -7,7 +7,7 @@
 # also installs the plugin, which the flake's modules link.
 
 pkgname=omaskpass
-pkgver=0.4.0
+pkgver=0.4.1
 pkgrel=1
 pkgdesc='SSH askpass that asks through an Omarchy shell dialog styled like the polkit agent'
 arch=(x86_64 aarch64)
