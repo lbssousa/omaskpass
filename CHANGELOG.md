@@ -7,6 +7,12 @@ tagged.
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-11-10
+
+### Changed
+- Set the dialog's Wayland layer namespace to `omarchy-polkit` so Hyprland
+  applies background blur and darkening, matching the polkit agent dialog.
+
 ## [0.4.1] - 2026-10-28
 
 ### Changed
