@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "יש לגעת במפתח האבטחה",
+  "askpass.deny": "דחייה",
+  "askpass.allow": "אישור",
+  "askpass.dismiss": "סגירה",
+  "askpass.passphrase": "ביטוי סיסמה",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "כן או לא",
+  "askpass.yesNoFingerprint": "כן, לא או טביעת האצבע"
+}

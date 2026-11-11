@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Dotaknite se varnostnega ključa",
+  "askpass.deny": "Zavrni",
+  "askpass.allow": "Dovoli",
+  "askpass.dismiss": "Opusti",
+  "askpass.passphrase": "Geselna fraza",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "da ali ne",
+  "askpass.yesNoFingerprint": "da, ne ali prstni odtis"
+}

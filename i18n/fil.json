@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Pindutin ang iyong security key",
+  "askpass.deny": "Tanggihan",
+  "askpass.allow": "Payagan",
+  "askpass.dismiss": "Isara",
+  "askpass.passphrase": "Passphrase",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "oo o hindi",
+  "askpass.yesNoFingerprint": "oo, hindi o ang fingerprint"
+}

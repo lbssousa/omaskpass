@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "உங்கள் பாதுகாப்பு விசையைத் தொடவும்",
+  "askpass.deny": "நிராகரி",
+  "askpass.allow": "அனுமதி",
+  "askpass.dismiss": "மூடு",
+  "askpass.passphrase": "கடவுச்சொற்றொடர்",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ஆம் அல்லது இல்லை",
+  "askpass.yesNoFingerprint": "ஆம், இல்லை அல்லது கைரேகை"
+}

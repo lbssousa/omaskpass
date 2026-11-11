@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "अपनी सिक्योरिटी की को छुएं",
+  "askpass.deny": "अस्वीकार करें",
+  "askpass.allow": "अनुमति दें",
+  "askpass.dismiss": "खारिज करें",
+  "askpass.passphrase": "पासफ़्रेज़",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "हाँ या ना",
+  "askpass.yesNoFingerprint": "हाँ, ना या फ़िंगरप्रिंट"
+}

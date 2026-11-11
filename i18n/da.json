@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Rør ved din sikkerhedsnøgle",
+  "askpass.deny": "Afvis",
+  "askpass.allow": "Tillad",
+  "askpass.dismiss": "Afvis",
+  "askpass.passphrase": "Adgangssætning",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ja eller nej",
+  "askpass.yesNoFingerprint": "ja, nej eller fingeraftrykket"
+}

@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Palieskite saugos raktą",
+  "askpass.deny": "Atmesti",
+  "askpass.allow": "Leisti",
+  "askpass.dismiss": "Uždaryti",
+  "askpass.passphrase": "Slaptafrazė",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "taip arba ne",
+  "askpass.yesNoFingerprint": "taip, ne arba piršto atspaudas"
+}

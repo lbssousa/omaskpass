@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Kosketa suojausavainta",
+  "askpass.deny": "Hylkää",
+  "askpass.allow": "Salli",
+  "askpass.dismiss": "Hylkää",
+  "askpass.passphrase": "Tunnuslause",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "kyllä tai ei",
+  "askpass.yesNoFingerprint": "kyllä, ei tai sormenjälki"
+}

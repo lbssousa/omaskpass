@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Gusa ufunguo wako wa usalama",
+  "askpass.deny": "Kataa",
+  "askpass.allow": "Ruhusu",
+  "askpass.dismiss": "Ondoa",
+  "askpass.passphrase": "Kauli ya siri",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ndiyo au hapana",
+  "askpass.yesNoFingerprint": "ndiyo, hapana au alama ya kidole"
+}

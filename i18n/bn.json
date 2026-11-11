@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "আপনার সিকিউরিটি কি স্পর্শ করুন",
+  "askpass.deny": "প্রত্যাখ্যান",
+  "askpass.allow": "অনুমতি দিন",
+  "askpass.dismiss": "বাতিল করুন",
+  "askpass.passphrase": "পাসফ্রেজ",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "হ্যাঁ বা না",
+  "askpass.yesNoFingerprint": "হ্যাঁ, না বা আঙুলের ছাপ"
+}

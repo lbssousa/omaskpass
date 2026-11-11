@@ -22,6 +22,7 @@ rustPlatform.buildRustPackage {
       ../manifest.json
       ../SshAskpassDialog.qml
       ../SshAskpassService.qml
+      ../i18n
     ];
   };
 
@@ -32,6 +33,7 @@ rustPlatform.buildRustPackage {
 
   postInstall = ''
     install -Dm644 -t $out/share/omaskpass/plugin manifest.json SshAskpassDialog.qml SshAskpassService.qml
+    cp -r i18n $out/share/omaskpass/plugin/
   '';
 
   meta = {

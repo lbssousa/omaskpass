@@ -32,6 +32,7 @@ fn instance_dir() -> tempfile::TempDir {
     for name in ["SshAskpassService.qml", "SshAskpassDialog.qml"] {
         symlink(root.join(name), dir.path().join(name)).unwrap();
     }
+    symlink(root.join("i18n"), dir.path().join("i18n")).unwrap();
     for module in ["Commons", "Ui"] {
         symlink(
             Path::new("/usr/share/omarchy/shell").join(module),

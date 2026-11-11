@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Άγγιξε το κλειδί ασφαλείας",
+  "askpass.deny": "Απόρριψη",
+  "askpass.allow": "Να επιτρέπεται",
+  "askpass.dismiss": "Απόρριψη",
+  "askpass.passphrase": "Φράση πρόσβασης",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ναι ή όχι",
+  "askpass.yesNoFingerprint": "ναι, όχι ή το δακτυλικό αποτύπωμα"
+}

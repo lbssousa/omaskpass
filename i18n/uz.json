@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Xavfsizlik kalitiga teging",
+  "askpass.deny": "Rad etish",
+  "askpass.allow": "Ruxsat berish",
+  "askpass.dismiss": "Yopish",
+  "askpass.passphrase": "Parol iborasi",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ha yoki yo'q",
+  "askpass.yesNoFingerprint": "ha, yo'q yoki barmoq izi"
+}

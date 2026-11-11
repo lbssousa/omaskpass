@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Teagmhaigh le d'eochair shlándála",
+  "askpass.deny": "Diúltaigh",
+  "askpass.allow": "Ceadaigh",
+  "askpass.dismiss": "Díbh",
+  "askpass.passphrase": "Frása faire",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "tá nó níl",
+  "askpass.yesNoFingerprint": "tá, níl nó an mhéarlorg"
+}
