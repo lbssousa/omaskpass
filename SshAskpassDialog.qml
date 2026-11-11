@@ -25,6 +25,7 @@ Item {
   property color foreground: Color.polkit.text
   property color textError: Color.polkit.textError
   property var borderSpec: Border.surfaceSpec("polkit", errorFlash ? "border-error" : "border", errorFlash ? Color.polkit.borderError : Color.polkit.border, Math.max(1, Style.space(2)), "border-alpha")
+  property color scrim: Color.polkit.scrim
   readonly property int contentMargin: Style.spacing.panelPadding
   readonly property int fieldHeight: Math.max(Style.space(42), Style.spacing.controlHeight)
   // OpenSSH's notifier for FIDO keys: "Confirm user presence for key …".
@@ -192,14 +193,14 @@ Item {
     visible: root.shown || root.closing
     anchors { top: true; bottom: true; left: true; right: true }
     color: "transparent"
-    WlrLayershell.namespace: "omaskpass"
+    WlrLayershell.namespace: "omarchy-polkit"
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: root.shown ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     exclusionMode: ExclusionMode.Ignore
 
     Rectangle {
       anchors.fill: parent
-      color: Color.polkit.scrim
+      color: root.scrim
     }
 
     MouseArea {
