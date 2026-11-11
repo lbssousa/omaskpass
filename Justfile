@@ -32,14 +32,18 @@ fuzz target="response" secs="60":
 # socket, so QML edits only need this restarted — not omarchy-shell. The
 # instance's folder is built in a temporary directory from dev/shell.qml, the
 # plugin's QML and the shell's Commons and Ui: plugins may not carry symlinks.
-dev:
+dev language="":
     #!/usr/bin/env bash
     set -eu
     dir=$(mktemp -d)
     trap 'rm -rf "$dir"' EXIT
-    for f in *.qml; do ln -s "$PWD/$f" "$dir/$f"; done
+    for f in *.qml i18n; do ln -s "$PWD/$f" "$dir/$f"; done
     ln -s /usr/share/omarchy/shell/Commons /usr/share/omarchy/shell/Ui "$dir/"
     cp dev/shell.qml "$dir/shell.qml"
+    if [ -n "{{language}}" ]; then
+      export OMARCHY_LANGUAGE_FILE="$dir/language"
+      echo "{{language}}" > "$OMARCHY_LANGUAGE_FILE"
+    fi
     OMASKPASS_SOCKET={{dev_socket}} quickshell -p "$dir"
 
 # Send a sample request (passphrase, confirm, touch or hostkey) through `just dev`.

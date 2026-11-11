@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "المس مفتاح الأمان",
+  "askpass.deny": "رفض",
+  "askpass.allow": "سماح",
+  "askpass.dismiss": "تجاهل",
+  "askpass.passphrase": "عبارة المرور",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "نعم أو لا",
+  "askpass.yesNoFingerprint": "نعم أو لا أو بصمة الإصبع"
+}

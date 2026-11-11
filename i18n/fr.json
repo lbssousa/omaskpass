@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Touchez votre clé de sécurité",
+  "askpass.deny": "Refuser",
+  "askpass.allow": "Autoriser",
+  "askpass.dismiss": "Ignorer",
+  "askpass.passphrase": "Phrase secrète",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "oui ou non",
+  "askpass.yesNoFingerprint": "oui, non ou l'empreinte"
+}

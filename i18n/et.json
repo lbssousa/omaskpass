@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Puuduta turvavõtit",
+  "askpass.deny": "Keeldu",
+  "askpass.allow": "Luba",
+  "askpass.dismiss": "Sulge",
+  "askpass.passphrase": "Paroolifraas",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "jah või ei",
+  "askpass.yesNoFingerprint": "jah, ei või sõrmejälg"
+}

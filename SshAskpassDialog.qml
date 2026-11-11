@@ -2,10 +2,13 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 Item {
   id: root
+
+  Commons.Translations { id: strings; directory: Qt.resolvedUrl("i18n") }
 
   signal finished(string result, string password)
 
@@ -31,7 +34,17 @@ Item {
   // OpenSSH's notifier for FIDO keys: "Confirm user presence for key …".
   readonly property bool touchMode: mode === "notify" && /user presence/i.test(prompt)
   readonly property bool typed: mode === "passphrase" || mode === "text"
-  readonly property int cardWidth: Math.min(Style.space(420), Math.max(Style.space(260), panel.width - Style.gapsOut * 2))
+  readonly property int touchCardWidth: Math.ceil(touchMeasure.implicitWidth + Style.space(40) + card.contentLeftInset + card.contentRightInset)
+  readonly property int cardWidth: Math.min(root.touchMode ? Math.max(Style.space(420), touchCardWidth) : Style.space(420), Math.max(Style.space(260), panel.width - Style.gapsOut * 2))
+
+  Text {
+    id: touchMeasure
+    visible: false
+    textFormat: Text.PlainText
+    font.family: root.fontFamily
+    font.pixelSize: Style.font.iconLarge
+    text: strings.t("askpass.touchSecurityKey", "Touch your security key")
+  }
 
   function open(req) {
     closeTimer.stop()
@@ -284,7 +297,7 @@ Item {
             width: parent.width - Style.space(40)
             height: parent.height
             textFormat: Text.PlainText
-            text: "Touch your security key"
+            text: strings.t("askpass.touchSecurityKey", "Touch your security key")
             color: root.foreground
             font.family: root.fontFamily
             font.pixelSize: Style.font.iconLarge
@@ -310,8 +323,12 @@ Item {
           visible: root.typed
           secret: root.mode !== "text"
           placeholder: root.mode === "text"
-            ? (/fingerprint/.test(root.prompt.split("\n").pop()) ? "yes, no or the fingerprint" : "yes or no")
-            : /\bPIN\b/.test(root.prompt) ? "PIN" : "Passphrase"
+            ? (/fingerprint/.test(root.prompt.split("\n").pop())
+                ? strings.t("askpass.yesNoFingerprint", "yes, no or the fingerprint")
+                : strings.t("askpass.yesNo", "yes or no"))
+            : /\bPIN\b/.test(root.prompt)
+                ? strings.t("askpass.pin", "PIN")
+                : strings.t("askpass.passphrase", "Passphrase")
           onAccepted: root.respond("ok")
         }
 
@@ -323,7 +340,7 @@ Item {
           Button {
             id: denyButton
             visible: root.mode === "confirm"
-            text: "Deny"
+            text: strings.t("askpass.deny", "Deny")
             bordered: true
             focusable: true
             onClicked: root.respond("cancel")
@@ -331,7 +348,7 @@ Item {
           Button {
             id: allowButton
             visible: root.mode === "confirm"
-            text: "Allow"
+            text: strings.t("askpass.allow", "Allow")
             bordered: true
             focusable: true
             selected: true
@@ -339,7 +356,7 @@ Item {
           }
           Button {
             visible: root.mode === "notify"
-            text: "Dismiss"
+            text: strings.t("askpass.dismiss", "Dismiss")
             bordered: true
             focusable: true
             selected: true

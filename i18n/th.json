@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "แตะคีย์ความปลอดภัยของคุณ",
+  "askpass.deny": "ปฏิเสธ",
+  "askpass.allow": "อนุญาต",
+  "askpass.dismiss": "ปิด",
+  "askpass.passphrase": "รหัสผ่าน",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ใช่หรือไม่",
+  "askpass.yesNoFingerprint": "ใช่, ไม่ หรือลายนิ้วมือ"
+}

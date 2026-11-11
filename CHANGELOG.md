@@ -7,6 +7,14 @@ tagged.
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-11-10
+
+### Added
+- Translations for all Omarchy languages (`i18n/`) following the shell's
+  display language (`Commons.Translations`), localizing texts such as
+  "Touch your security key", "Deny", "Allow", "Dismiss", "Passphrase",
+  "PIN", and yes/no placeholders.
+
 ## [0.4.2] - 2026-11-10
 
 ### Changed

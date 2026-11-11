@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Chạm vào khóa bảo mật",
+  "askpass.deny": "Từ chối",
+  "askpass.allow": "Cho phép",
+  "askpass.dismiss": "Đóng",
+  "askpass.passphrase": "Cụm mật khẩu",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "có hoặc không",
+  "askpass.yesNoFingerprint": "có, không hoặc dấu vân tay"
+}

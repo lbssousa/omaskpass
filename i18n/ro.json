@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Atinge cheia de securitate",
+  "askpass.deny": "Refuză",
+  "askpass.allow": "Permite",
+  "askpass.dismiss": "Închide",
+  "askpass.passphrase": "Frază de acces",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "da sau nu",
+  "askpass.yesNoFingerprint": "da, nu sau amprenta"
+}

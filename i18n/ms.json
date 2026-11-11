@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Sentuh kunci keselamatan anda",
+  "askpass.deny": "Tolak",
+  "askpass.allow": "Benarkan",
+  "askpass.dismiss": "Tutup",
+  "askpass.passphrase": "Frasa Laluan",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "ya atau tidak",
+  "askpass.yesNoFingerprint": "ya, tidak atau cap jari"
+}

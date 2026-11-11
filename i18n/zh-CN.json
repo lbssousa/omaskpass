@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "触摸你的安全密钥",
+  "askpass.deny": "拒绝",
+  "askpass.allow": "允许",
+  "askpass.dismiss": "关闭",
+  "askpass.passphrase": "密码短语",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "yes 或 no",
+  "askpass.yesNoFingerprint": "yes、no 或指纹"
+}

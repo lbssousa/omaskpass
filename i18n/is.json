@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Snertu öryggislykilinn",
+  "askpass.deny": "Hafna",
+  "askpass.allow": "Leyfa",
+  "askpass.dismiss": "Loka",
+  "askpass.passphrase": "Aðgangssetning",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "já eða nei",
+  "askpass.yesNoFingerprint": "já, nei eða fingrafarið"
+}

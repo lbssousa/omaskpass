@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Торкніться ключа безпеки",
+  "askpass.deny": "Відхилити",
+  "askpass.allow": "Дозволити",
+  "askpass.dismiss": "Закрити",
+  "askpass.passphrase": "Парольна фраза",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "так або ні",
+  "askpass.yesNoFingerprint": "так, ні або відбиток"
+}

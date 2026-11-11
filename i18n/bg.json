@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Докосни ключа за сигурност",
+  "askpass.deny": "Отказ",
+  "askpass.allow": "Разрешаване",
+  "askpass.dismiss": "Затвори",
+  "askpass.passphrase": "Паролна фраза",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "да или не",
+  "askpass.yesNoFingerprint": "да, не или пръстов отпечатък"
+}

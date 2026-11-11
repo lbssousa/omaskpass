@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Touch your security key",
+  "askpass.deny": "Deny",
+  "askpass.allow": "Allow",
+  "askpass.dismiss": "Dismiss",
+  "askpass.passphrase": "Passphrase",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "yes or no",
+  "askpass.yesNoFingerprint": "yes, no or the fingerprint"
+}

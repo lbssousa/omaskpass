@@ -1,0 +1,10 @@
+{
+  "askpass.touchSecurityKey": "Érintsd meg a biztonsági kulcsot",
+  "askpass.deny": "Megtagadás",
+  "askpass.allow": "Engedélyezés",
+  "askpass.dismiss": "Bezárás",
+  "askpass.passphrase": "Jelmondat",
+  "askpass.pin": "PIN",
+  "askpass.yesNo": "igen vagy nem",
+  "askpass.yesNoFingerprint": "igen, nem vagy az ujjlenyomat"
+}
