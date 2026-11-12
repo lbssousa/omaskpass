@@ -31,3 +31,7 @@ jobs:
       # #[ignore]d; everything else runs here.
       - name: Tests
         run: cargo test --locked
+
+      # The dialog fields' typing (FieldEditor.js), outside Qt.
+      - name: QML field editor tests
+        run: node --test tests/field-editor.test.mjs

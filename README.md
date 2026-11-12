@@ -17,7 +17,7 @@ socket, environment variable (`SSH_ASKPASS_OMARCHY_SOCKET` →
 ## How it works
 
 This consists of two parts:
-1. An Omarchy (Quickshell) plugin (`lbssousa.omaskpass`: `manifest.json` and the QML files at the repository root) that listens on a UNIX socket for passphrase requests and displays the UI dialog.
+1. An Omarchy (Quickshell) plugin (`lbssousa.omaskpass`: `manifest.json` and the QML and JavaScript files at the repository root) that listens on a UNIX socket for passphrase requests and displays the UI dialog.
 2. A Rust binary (`omaskpass`) that is executed by OpenSSH. It receives the prompt message as an argument, forwards it to the plugin's socket via JSON, waits for the user input, and outputs the resulting passphrase to stdout.
 
 ## Modes
@@ -203,7 +203,7 @@ importing the maintainer's public key.
 
 | Recipe | What it does |
 |---|---|
-| `just test` | Unit tests, integration tests against a fake dialog, `cargo fmt --check` and clippy |
+| `just test` | Unit tests, integration tests against a fake dialog, the fields' typing (`FieldEditor.js`, with Node), `cargo fmt --check` and clippy |
 | `just test-plugin` | Protocol tests against the real QML plugin in a throwaway Quickshell instance (needs the Wayland session; dialogs flash on screen) |
 | `just fuzz [target] [secs]` | Fuzzes the reply parser, the prompt cleaner or the passphrase decoder with cargo-fuzz (needs nightly Rust and `cargo install cargo-fuzz`) |
 | `just dev` | Runs the dialog in a separate Quickshell instance on its own socket (from `dev/shell.qml`, built in a temporary folder that links the plugin's QML and the shell's `Commons`/`Ui`; the checkout carries no symlinks, which plugins may not have) |
