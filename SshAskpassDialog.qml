@@ -4,6 +4,7 @@ import Quickshell.Wayland
 import qs.Commons
 import qs.Commons as Commons
 import qs.Ui
+import "FieldEditor.js" as FieldEditor
 
 Item {
   id: root
@@ -161,10 +162,35 @@ Item {
           color: root.errorFlash ? root.textError : root.foreground
           cursorVisible: activeFocus
           enabled: root.shown
+          // Read-only so Qt never reads the clipboard for this field, not
+          // even on its own when another client offers text; FieldEditor.js
+          // does the typing (and says why).
+          readOnly: true
+          property int deadKey: 0
+          onActiveFocusChanged: deadKey = 0
+          onTextChanged: if (text.length === 0) deadKey = 0
           onAccepted: field.accepted()
           Keys.onPressed: function(event) {
             if (event.key === Qt.Key_Escape) {
               root.respond("cancel")
+              event.accepted = true
+              return
+            }
+            // Paste and cut do nothing in a read-only field; consumed here
+            // as well so no paste route is ever left to Qt.
+            if (event.matches(StandardKey.Paste) || event.matches(StandardKey.Cut)) {
+              event.accepted = true
+              return
+            }
+            var r = FieldEditor.key({
+              text: text, cursor: cursorPosition,
+              selectionStart: selectionStart, selectionEnd: selectionEnd,
+              dead: deadKey, secret: field.secret
+            }, event, Qt.locale().name)
+            deadKey = r.dead
+            if (r.handled) {
+              if (r.text !== text) text = r.text
+              cursorPosition = r.cursor
               event.accepted = true
             }
           }

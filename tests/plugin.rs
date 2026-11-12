@@ -29,7 +29,11 @@ impl Drop for Shell {
 fn instance_dir() -> tempfile::TempDir {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     let dir = tempfile::tempdir().unwrap();
-    for name in ["SshAskpassService.qml", "SshAskpassDialog.qml"] {
+    for name in [
+        "SshAskpassService.qml",
+        "SshAskpassDialog.qml",
+        "FieldEditor.js",
+    ] {
         symlink(root.join(name), dir.path().join(name)).unwrap();
     }
     symlink(root.join("i18n"), dir.path().join("i18n")).unwrap();

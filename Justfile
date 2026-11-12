@@ -13,6 +13,7 @@ build:
 # Unit + integration tests, formatting and clippy.
 test:
     cargo test --locked
+    node --test tests/field-editor.test.mjs
     cargo fmt --check
     cargo clippy --all-targets --locked -- -D warnings
 
@@ -37,7 +38,7 @@ dev language="":
     set -eu
     dir=$(mktemp -d)
     trap 'rm -rf "$dir"' EXIT
-    for f in *.qml i18n; do ln -s "$PWD/$f" "$dir/$f"; done
+    for f in *.qml *.js i18n; do ln -s "$PWD/$f" "$dir/$f"; done
     ln -s /usr/share/omarchy/shell/Commons /usr/share/omarchy/shell/Ui "$dir/"
     cp dev/shell.qml "$dir/shell.qml"
     if [ -n "{{language}}" ]; then

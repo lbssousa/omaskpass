@@ -22,6 +22,7 @@ rustPlatform.buildRustPackage {
       ../manifest.json
       ../SshAskpassDialog.qml
       ../SshAskpassService.qml
+      ../FieldEditor.js
       ../i18n
     ];
   };
@@ -32,7 +33,7 @@ rustPlatform.buildRustPackage {
   nativeCheckInputs = [ util-linux ];
 
   postInstall = ''
-    install -Dm644 -t $out/share/omaskpass/plugin manifest.json SshAskpassDialog.qml SshAskpassService.qml
+    install -Dm644 -t $out/share/omaskpass/plugin manifest.json SshAskpassDialog.qml SshAskpassService.qml FieldEditor.js
     cp -r i18n $out/share/omaskpass/plugin/
   '';
 
