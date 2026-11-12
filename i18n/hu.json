@@ -4,7 +4,5 @@
   "askpass.allow": "Engedélyezés",
   "askpass.dismiss": "Bezárás",
   "askpass.passphrase": "Jelmondat",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "igen vagy nem",
-  "askpass.yesNoFingerprint": "igen, nem vagy az ujjlenyomat"
+  "askpass.pin": "PIN"
 }

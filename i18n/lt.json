@@ -4,7 +4,5 @@
   "askpass.allow": "Leisti",
   "askpass.dismiss": "Uždaryti",
   "askpass.passphrase": "Slaptafrazė",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "taip arba ne",
-  "askpass.yesNoFingerprint": "taip, ne arba piršto atspaudas"
+  "askpass.pin": "PIN"
 }

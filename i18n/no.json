@@ -4,7 +4,5 @@
   "askpass.allow": "Tillat",
   "askpass.dismiss": "Avvis",
   "askpass.passphrase": "Passfrase",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ja eller nei",
-  "askpass.yesNoFingerprint": "ja, nei eller fingeravtrykket"
+  "askpass.pin": "PIN"
 }

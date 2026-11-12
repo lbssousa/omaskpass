@@ -4,7 +4,5 @@
   "askpass.allow": "Permitir",
   "askpass.dismiss": "Dispensar",
   "askpass.passphrase": "Frase secreta",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "sim ou não",
-  "askpass.yesNoFingerprint": "sim, não ou a impressão digital"
+  "askpass.pin": "PIN"
 }

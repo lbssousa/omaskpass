@@ -4,7 +4,5 @@
   "askpass.allow": "Salli",
   "askpass.dismiss": "Hylkää",
   "askpass.passphrase": "Tunnuslause",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "kyllä tai ei",
-  "askpass.yesNoFingerprint": "kyllä, ei tai sormenjälki"
+  "askpass.pin": "PIN"
 }

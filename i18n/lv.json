@@ -4,7 +4,5 @@
   "askpass.allow": "Atļaut",
   "askpass.dismiss": "Aizvērt",
   "askpass.passphrase": "Ieejas frāze",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "jā vai nē",
-  "askpass.yesNoFingerprint": "jā, nē vai pirksta nospiedums"
+  "askpass.pin": "PIN"
 }

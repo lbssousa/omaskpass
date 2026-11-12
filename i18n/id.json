@@ -4,7 +4,5 @@
   "askpass.allow": "Izinkan",
   "askpass.dismiss": "Tutup",
   "askpass.passphrase": "Frasa Sandi",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ya atau tidak",
-  "askpass.yesNoFingerprint": "ya, tidak, atau sidik jari"
+  "askpass.pin": "PIN"
 }

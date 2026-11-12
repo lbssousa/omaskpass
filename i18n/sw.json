@@ -4,7 +4,5 @@
   "askpass.allow": "Ruhusu",
   "askpass.dismiss": "Ondoa",
   "askpass.passphrase": "Kauli ya siri",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ndiyo au hapana",
-  "askpass.yesNoFingerprint": "ndiyo, hapana au alama ya kidole"
+  "askpass.pin": "PIN"
 }
