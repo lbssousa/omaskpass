@@ -348,10 +348,10 @@ Item {
           id: passwordField
           visible: root.typed
           secret: root.mode !== "text"
+          // OpenSSH only takes the English words, so they're shown as its
+          // own question writes them, never translated.
           placeholder: root.mode === "text"
-            ? (/fingerprint/.test(root.prompt.split("\n").pop())
-                ? strings.t("askpass.yesNoFingerprint", "yes, no or the fingerprint")
-                : strings.t("askpass.yesNo", "yes or no"))
+            ? (/fingerprint/.test(root.prompt.split("\n").pop()) ? "yes/no/[fingerprint]" : "yes/no")
             : /\bPIN\b/.test(root.prompt)
                 ? strings.t("askpass.pin", "PIN")
                 : strings.t("askpass.passphrase", "Passphrase")

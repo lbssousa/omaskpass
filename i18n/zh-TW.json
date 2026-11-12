@@ -4,7 +4,5 @@
   "askpass.allow": "允許",
   "askpass.dismiss": "關閉",
   "askpass.passphrase": "通行密碼",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "yes 或 no",
-  "askpass.yesNoFingerprint": "yes、no 或指紋"
+  "askpass.pin": "PIN"
 }

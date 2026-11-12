@@ -4,7 +4,5 @@
   "askpass.allow": "Dovoli",
   "askpass.dismiss": "Opusti",
   "askpass.passphrase": "Geselna fraza",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "da ali ne",
-  "askpass.yesNoFingerprint": "da, ne ali prstni odtis"
+  "askpass.pin": "PIN"
 }

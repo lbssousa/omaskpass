@@ -4,7 +4,5 @@
   "askpass.allow": "Toestaan",
   "askpass.dismiss": "Sluiten",
   "askpass.passphrase": "Wachtwoordzin",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ja of nee",
-  "askpass.yesNoFingerprint": "ja, nee of de vingerafdruk"
+  "askpass.pin": "PIN"
 }

@@ -4,7 +4,5 @@
   "askpass.allow": "Payagan",
   "askpass.dismiss": "Isara",
   "askpass.passphrase": "Passphrase",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "oo o hindi",
-  "askpass.yesNoFingerprint": "oo, hindi o ang fingerprint"
+  "askpass.pin": "PIN"
 }

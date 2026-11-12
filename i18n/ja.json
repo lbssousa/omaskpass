@@ -4,7 +4,5 @@
   "askpass.allow": "許可",
   "askpass.dismiss": "閉じる",
   "askpass.passphrase": "パスフレーズ",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "yes または no",
-  "askpass.yesNoFingerprint": "yes、no または指紋"
+  "askpass.pin": "PIN"
 }

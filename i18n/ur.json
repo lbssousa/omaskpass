@@ -4,7 +4,5 @@
   "askpass.allow": "اجازت دیں",
   "askpass.dismiss": "خارج کریں",
   "askpass.passphrase": "پاس فریز",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ہاں یا نہیں",
-  "askpass.yesNoFingerprint": "ہاں، نہیں یا فنگر پرنٹ"
+  "askpass.pin": "PIN"
 }

@@ -4,7 +4,5 @@
   "askpass.allow": "অনুমতি দিন",
   "askpass.dismiss": "বাতিল করুন",
   "askpass.passphrase": "পাসফ্রেজ",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "হ্যাঁ বা না",
-  "askpass.yesNoFingerprint": "হ্যাঁ, না বা আঙুলের ছাপ"
+  "askpass.pin": "PIN"
 }

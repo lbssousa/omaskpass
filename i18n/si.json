@@ -4,7 +4,5 @@
   "askpass.allow": "ඉඩ දෙන්න",
   "askpass.dismiss": "ඉවතලන්න",
   "askpass.passphrase": "මුරවැකිය",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ඔව් හෝ නැත",
-  "askpass.yesNoFingerprint": "ඔව්, නැත හෝ ඇඟිලි සලකුණ"
+  "askpass.pin": "PIN"
 }

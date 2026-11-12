@@ -4,7 +4,5 @@
   "askpass.allow": "Povolit",
   "askpass.dismiss": "Zavřít",
   "askpass.passphrase": "Heslová fráze",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "ano nebo ne",
-  "askpass.yesNoFingerprint": "ano, ne nebo otisk prstu"
+  "askpass.pin": "PIN"
 }

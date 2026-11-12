@@ -4,7 +4,5 @@
   "askpass.allow": "İzin ver",
   "askpass.dismiss": "Kapat",
   "askpass.passphrase": "Parola Cümlesi",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "evet veya hayır",
-  "askpass.yesNoFingerprint": "evet, hayır veya parmak izi"
+  "askpass.pin": "PIN"
 }

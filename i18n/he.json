@@ -4,7 +4,5 @@
   "askpass.allow": "אישור",
   "askpass.dismiss": "סגירה",
   "askpass.passphrase": "ביטוי סיסמה",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "כן או לא",
-  "askpass.yesNoFingerprint": "כן, לא או טביעת האצבע"
+  "askpass.pin": "PIN"
 }

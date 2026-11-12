@@ -7,6 +7,16 @@ tagged.
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-11-12
+
+### Fixed
+- The answer field of OpenSSH's yes/no questions (host keys) no longer
+  suggests translated answers ("sim ou não" in Portuguese): OpenSSH only
+  accepts the English words, so it now shows them as OpenSSH's own
+  question writes them, `yes/no/[fingerprint]` or `yes/no`, in every
+  language. The `askpass.yesNo` and `askpass.yesNoFingerprint` strings are
+  gone from `i18n/`.
+
 ## [0.4.4] - 2026-11-12
 
 ### Security

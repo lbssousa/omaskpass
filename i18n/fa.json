@@ -4,7 +4,5 @@
   "askpass.allow": "اجازه دادن",
   "askpass.dismiss": "بستن",
   "askpass.passphrase": "گذرعبور",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "بله یا خیر",
-  "askpass.yesNoFingerprint": "بله، خیر یا اثر انگشت"
+  "askpass.pin": "PIN"
 }

@@ -4,7 +4,5 @@
   "askpass.allow": "Consenti",
   "askpass.dismiss": "Ignora",
   "askpass.passphrase": "Passphrase",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "sì o no",
-  "askpass.yesNoFingerprint": "sì, no o l'impronta digitale"
+  "askpass.pin": "PIN"
 }

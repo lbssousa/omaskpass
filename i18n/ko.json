@@ -4,7 +4,5 @@
   "askpass.allow": "허용",
   "askpass.dismiss": "닫기",
   "askpass.passphrase": "암호",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "예 또는 아니요",
-  "askpass.yesNoFingerprint": "예, 아니요 또는 지문"
+  "askpass.pin": "PIN"
 }

@@ -4,7 +4,5 @@
   "askpass.allow": "Дозволи",
   "askpass.dismiss": "Затвори",
   "askpass.passphrase": "Лозинка-фраза",
-  "askpass.pin": "PIN",
-  "askpass.yesNo": "да или не",
-  "askpass.yesNoFingerprint": "да, не или отисак прста"
+  "askpass.pin": "PIN"
 }
